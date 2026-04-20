@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="A layout example that shows off a blog page with a list of posts.">
+
+    <title>Si Chen's Homepage</title>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+<!-- <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css"> -->
+<link rel="stylesheet" href="{{ url_for('static', filename='pure/pure.css') }}">
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-8217718-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+<!--[if lte IE 8]>
+  
+<link rel="stylesheet" href="{{ url_for('static', filename='pure/grids-responsive-old-ie-min.css') }}">
+  
+<![endif]-->
+<!--[if gt IE 8]><!-->
+  
+<!--    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/grids-responsive-min.css"> -->
+  
+<link rel="stylesheet" href="{{ url_for('static', filename='pure/grids-responsive-min.css') }}">
+<!--<![endif]-->
+  
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="css/layouts/blog-old-ie.css">
+    <![endif]-->
+    <!--[if gt IE 8]><!-->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/layouts/blog.css') }}">
+    <!--<![endif]-->
+  
+
+    <style scoped>
+
+        .button-success,
+        .button-error,
+        .button-warning,
+        .button-secondary {
+            font-size: 11px;
+            color: white;
+            border-radius: 0px;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+        }
+
+        .button-success {
+            background: rgb(28, 184, 65); /* this is a green */
+        }
+
+        .button-error {
+            background: rgb(202, 60, 60); /* this is a maroon */
+        }
+
+        .button-warning {
+            background: rgb(223, 117, 20); /* this is an orange */
+        }
+
+        .button-secondary {
+            background: rgb(66, 184, 221); /* this is a light blue */
+        }
+
+    </style>
+    
+
+
+    
+
+</head>
+<body>
+<div class = "pure-g">
+    <div class="pure-u-xl-2-24 pure-u-sm-0-24 pure-u-md-1-24">
+	</div>
+    <div class="pure-u-xl-20-24 pure-u-sm-24-24 pure-u-md-22-24">
+         <div class="posts pure-u-24-24">
+        <h1>Si Chen</h1>
+<h4>Assistant Professor </h4>
+<h4>Department of Computer Science</h4>
+<h4>25 University Ave. | Room 142 </h4>
+<h4>West Chester, PA 19383 </h4>
+<h4>tel: 610-436-2663 | fax: 610-436-3530</h4>
+
+        </div>
+
+        <div>
+
+            <!-- A wrapper for all the blog posts -->
+            <div class="posts">
+                <h1 class="content-subhead">About Me</h1>
+
+                <!-- A single blog post -->
+                <section class="pure-g">
+
+                    <div class="pure-u-5-24">
+                        <img alt="My avatar" class="pure-img-responsive pica" src="{{ url_for('static', filename='images/si.jpg') }}">
+                    </div>
+ <div class="post-description_sameline pure-u-18-24">
+
+           <nav class="nav">
+                <ul class="nav-list">
+
+                 <!--    Résumé -->
+                     <li class="nav-item">
+                        <a class="pure-button pure-button-primary" href="mailto:schen@wcupa.edu"><i class="fa fa-envelope"></i> Mail</a>
+                    </li> 
+                    <li class="nav-item">
+                        <a class="pure-button pure-button-primary" href="https://github.com/quake0day/resume/blob/master/resume_eng.pdf?raw=true"> <i class="fa fa-file-pdf-o"></i> CV</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="pure-button pure-button-primary"  href="https://scholar.google.com/citations?user=DDLTYpAAAAAJ&hl=en" target="_blank"><i class="fa fa-graduation-cap"></i> Google Scholar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="pure-button pure-button-primary" href="https://www.researchgate.net/profile/Si_Chen11" target="_blank"><i class="fa fa-university"></i> Research Gate</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="pure-button pure-button-primary" href="http://www.quake0day.com"  target="_blank"><i class="fa fa-home"></i> Blog (Chinese)</a>
+                    </li>
+                    <li class="nav-item">
+                       <a class="pure-button pure-button-primary" href="https://github.com/quake0day"  target="_blank"><i class="fa fa-github-square"></i> GitHub</a>
+                    </li>
+                </ul>
+            </nav>
+
+                                         <p class="post-description">I am a tenure-Track Assistant Professor in the Computer Science department at the <a href="https://www.cs.wcupa.edu/faculty#Chen" target="_blank">West Chester University of Pennsylvania</a>.
+                                         I graduated from University at Buffalo - SUNY in the Department of Computer Science and Engineering under the supervision of <a href="http://www.acsu.buffalo.edu/~kuiren/" target="_blank">Dr. Kui Ren</a>. 
+<br />
+My research interest broadly focuses on exploring the novel ideas and techniques to solve practical problems and security issues for <strong>mobile sensing</strong> and <strong>cyber-physical systems</strong>. In the context of mobile sensing systems, I am interested in smartphone-enabled crowdsourcing approaches that can help build large-scale information infrastructures conveniently at a very low cost. I also study cyber-physical system security from the physical layer, leveraging various related characteristics to enable inherently secure and dependable wireless communications.
+<br />
+In my spare time, I actively participate volunteer computing projects to power cutting-edge research in health, poverty, and sustainability:               
+ {% for badge in badges %}
+                <img src="{{badge[1] }}" title="{{badge[0]}}">
+                {% endfor %}
+</p>
+<p class="post-description"> My research on voice hacking has been featured in:
+                <ul> 
+                <div class="pure-g">
+                <div class="pure-u-1-12 logo">
+                    <a href="https://www.scientificamerican.com/article/can-you-hear-me-now-how-to-protect-yourself-from-voice-hackers/"  target="_blank"> <img class="pica pure-img-responsive" src="{{ url_for('static', filename='images/sa.png') }}" alt="SCIENTIFIC AMERICAN"> </a>
+                </div>
+
+                <div class="pure-u-1-12 logo">
+                  <a href="https://www.cbsnews.com/news/protecting-your-smartphone-from-voice-impersonators/"  target="_blank"><img class="pica pure-img-responsive" src="{{ url_for('static', filename='images/cbs.png') }}" alt="cbs news"> </a>
+                </div>       
+
+                <div class="pure-u-1-12 logo">
+                   <a href="https://www.sciencedaily.com/releases/2017/06/170605124108.htm"  target="_blank">  <img class="pica pure-img-responsive" src="{{ url_for('static', filename='images/sd.png') }}" alt="sciencedaily"> </a>
+                </div>
+                <div class="pure-u-1-12 logo">
+                    <a href="http://www.gizmodo.in/indiamodo/app-to-use-smartphone-compass-to-foil-voice-hacking/articleshow/59016575.cms"  target="_blank"> <img class="pica pure-img-responsive" src="{{ url_for('static', filename='images/gizmodo.png') }}" alt="gizmodo"> </a>
+                </div>
+
+                <div class="pure-u-1-12 logo">
+                  <a href="http://www.techradar.com/news/your-smartphones-compass-can-protect-you-from-voice-hacks"  target="_blank"><img class="pica pure-img-responsive" src="{{ url_for('static', filename='images/techradar.png') }}" alt="techradar"> </a>
+                </div>               
+
+                              <div class="pure-u-1-12 logo">
+                    <img class="pica pure-img-responsive" src="{{ url_for('static', filename='images/f.png') }}" alt="Mountain">
+                </div>                 <div class="pure-u-1-12 logo">
+                    <img class="pica pure-img-responsive" src="{{ url_for('static', filename='images/g.jpg') }}" alt="Mountain">
+                </div>
+
+                                
+                 <div class="pure-u-1-12 logo">
+                    <img class="pica pure-img-responsive" src="{{ url_for('static', filename='images/e.jpg') }}" alt="Mountain">
+                </div>   
+                </ul>
+                </p>
+                
+</div>
+
+<!--                     <header class="post-header">
+                        <img class="post-avatar" alt="Tilo Mitra&#x27;s avatar" height="48" width="48" src="img/common/tilo-avatar.png">
+
+                        <h2 class="post-title">Introducing Pure</h2>
+
+                        <p class="post-meta">
+                            By <a href="#" class="post-author">Tilo Mitra</a> under <a class="post-category post-category-design" href="#">CSS</a> <a class="post-category post-category-pure" href="#">Pure</a>
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p>
+                            Yesterday at CSSConf, we launched Pure – a new CSS library. Phew! Here are the <a href="https://speakerdeck.com/tilomitra/pure-bliss">slides from the presentation</a>. Although it looks pretty minimalist, we’ve been working on Pure for several months. After many iterations, we have released Pure as a set of small, responsive, CSS modules that you can use in every web project.
+                        </p>
+                    </div> -->
+                </section>
+            </div>
+
+
+<!--
+
+
+            <div class="posts pure-u-24-24">
+                <h1 class="content-subhead">Research Highlights</h1>
+                <section class="pure-g">
+                <div class="pure-u-8-24">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/vg4EE8wD8TE" frameborder="0" allowfullscreen></iframe>
+                </div>
+                 <div class="post-description_sameline pure-u-14-24">
+
+                 <p class="post-description">
+                Si receives the <a href="http://icdcs2017.gatech.edu/awards/" target="_blank">Best Student Paper Award</a> of ICDCS'17 for paper <strong>"You Can Hear But You Cannot Steal: Defending against Voice Impersonation Attacks on Smartphones"</strong>! </br>
+                My paper <strong>"You Can Hear But You Cannot Steal: Defending against Voice Impersonation Attacks on Smartphones"</strong> got accepted by ICDCS'17!</br>
+                Si receives <strong>Research in Mathematics and the Sciences (RIMS) Award</strong> for his project "CrowdMap: Reconstruction of visual Building Floorplan via Mobile Crowdsourcing"!</br>
+                 Si receives <strong>Microsoft Research Azure Research Grant</strong> for his project "CrowdMap++: Reconstruction of Context-Rich Building Floorplan via Mobile Crowdsourcing"!</br>
+                 </p>
+                 </div>
+             
+                 </div>
+
+                </section>
+            </div>
+
+   -->
+
+            <div class="posts">
+                <h1 class="content-subhead">Recent publications and pre-prints</h1>
+
+                <section class="post post-description">
+                        <ul> 
+                            {% for entrie in entries %}
+                            <div class="pure-u-17-24 publication">
+                                {% if entrie['type'] == 1 %}
+                                <a class="post-category post-category-design">C</a> 
+                                {% endif %}
+                                {% if entrie['type'] == 2 %}
+                                <a class="post-category post-category-pure">J</a> 
+                                {% endif %}
+                                {% if entrie['type'] == 3 %}
+                                <a class="post-category post-category-js">P</a> 
+                                {% endif %}
+                                {% if entrie['type'] == 4 %}
+                                <a class="post-category post-category-yui">B</a> 
+                                {% endif %}
+                                <tit><a href="{{ entrie['urlpaper'] }}" target="_blank">{{ entrie['title'] }}</a></tit> <br /> <author>{{ entrie['author'] }}.</author> <br /><conf>{{ entrie['confname'] }}</conf> 
+
+                                {% if entrie['type'] == 1 %}                                
+                                , {{ entrie['place'] }}. 
+                                {% else %} 
+                                .
+                                {% endif %}
+                                {% if entrie['urlpaper'] %}
+                                   <br /> <a href="{{ entrie['urlpaper'] }}" target="_blank">[paper]</a>
+                                {% endif %}
+
+                                {% if entrie['urlslides'] %}
+                                    | <a href="{{ entrie['urlslides'] }}" target="_blank">[slides]</a>
+                                {% endif %}                                
+
+                                {% if entrie['video'] %}
+                                    | <a href="{{ entrie['video'] }}" target="_blank">[video]</a>
+                                {% endif %}                                
+                                 {% if entrie['text'] %}
+                                    | <button class="button-error pure-button">{{ entrie['text'] }} </button>
+
+                                {% endif %}
+
+                            </div>
+                            <div class="pure-u-2-24">
+                                <a class="post-category" href="{{ entrie['urlcite'] }}">{{ entrie['cite'] }}</a> 
+                            </div>
+                            <div class="pure-u-2-24">
+                                <strong>{{ entrie['year'] }}</strong>
+                            </div>
+                            {% endfor %}
+                        </ul>
+                </section>
+            </div>
+
+
+            <div class="posts pure-u-24-24">
+                <h1 class="content-subhead">Honors and Awards</h1>
+
+                <section class="post post-description_sameline ">
+                        <ul>
+                        <li><a href="http://icdcs2017.gatech.edu/awards/" target="_blank">Best Student Paper Award</a>, IEEE ICDCS, 2017</li>
+                        <li>WCU Outstanding Faculty Recipients, 2016-2017</li>
+                        <li>WCU Research in Mathematics and the Sciences (RIMS) Award, 2016-2017</li> 
+                            <li>Microsoft Research Azure Research Grant for "CrowdMap++: Reconstruction of Context-Rich Building Floorplan via Mobile Crowdsourcing", 2016</li>
+                            <li> <a href="http://www.sigmobile.org/mobicom/2013/app_finalists.html" target="_blank">The 19th Annual International Conference on Mobile Computing and Networking (ACM Mobicom’13) App Competition Finalists</a> (<a href="https://vimeo.com/77708077" target="_blank">Video</a>), 2013</li>
+                            <li> Student Travel Grant Awards, IEEE ICDCS, 2015</li>
+                            <li> Top 100 Excellent Graduate Theses in China Agricultural University, 2010</li>
+                            <li> Excellent Graduate Award in China Agricultural University, 2010</li>
+                            <li> National University Student Innovation Program Award, 2009-2010</li>
+                            <li> Undergraduate Research Program Award, 2007-2008</li>
+                            <li> Third Prize of International Interdisciplinary Contest in Modeling (ICM), 2009</li>
+                            <li> Third Prize of Scholarship for Excellent Academic Performance, 2007, 2008, 2009</li>
+                            <li> Awarded “The best debater” title in debate competitions, 2006, 2007</li>
+                        </ul>
+
+
+                </section>
+            </div>
+
+            <div class="posts pure-u-24-24">
+                <h1 class="content-subhead">Services</h1>
+
+                <section class="post post-description_sameline ">
+                        <ul> <strong>Professional Service: </strong>
+                        <li><strong>"<a href="http://events.afcea.org/milcom16/Public/SessionDetails.aspx?FromPage=Sessions.aspx&SessionID=5645&SessionDateID=369" target="_blank">IoT Device Security</a>" Session Chair</strong> for <a href="http://events.afcea.org/milcom16/Public/enter.aspx" target="_blank">Milcom 2016</a></li>
+                        <li><strong>Technical Program Committee (TPC)</strong> for <a href="http://events.afcea.org/milcom16/Public/enter.aspx" target="_blank">Milcom 2017, 2016</a></li>
+                            <li> <strong>Conference Reviewer</strong> for IMWUT'17 (Ubicomp), ICNC'17 CIS, Milcom 2016, AsiaCCS'16, ICCCN’16, ACM CCS’15, ICDCS’15, ESORICS’15, AsiaCCS’15, Cloud’15, ICCCN’15, DBSec’15, CoudCom’15, ACM CHI’15, CloudNet’15, ISC’15, Securecomm’15, IEEE MSN’15, IPCCC’15, INFOCOM’14, ACM CCS’14, ICDCS’14, ESORICS’14, ICNP’14, AisaCCS’14, MobiHoc’14, CNS’14, CloudNet’14,DBSec’14, SecureComm’14.
+</li>
+                                                        <li> <strong>Journal Reviewer</strong> for IEEE Transactions on Mobile Computing (TMC), IEEE Transactions on Dependable and Secure Computing​ (TDSC), IEEE JSAC Special Issue on “Human-In-The-Loop Mobile Networks” (JSAC-HMN), Special Issue of Vehicular Communications on “Vehicular Cloud Networking” (VEHCOM 2016), IEEE Trans. on Parallel and Distributed Systems, IEEE Trans. on Services Computing, IEEE Trans. on Smart Grid, IEEE Trans. on Vehicular Technology, IEEE Trans. on Wireless Communications, IEEE Security & Privacy magazine, IEEE Network Magazine, Journal of Computer Security, Journal of Mobile Communication, Computation and Information, Journal of Parallel and Distributed Computing.</li>
+                                                        <li><strong>Web chair</strong> for <a href="http://www.cse.buffalo.edu/ccw13/" target="_blank">the 27th IEEE Annual Computer Communications Workshop (CCW’13)</a>.</li>
+                        </ul>
+
+                        <ul> <strong>University Service: </strong>
+                        <li>Advisor for WCU Computer Science Club (<a href="https://orgsync.com/50691/chapter" target="_blank">link</a>)</li>
+                        <li>Coach for ACM ICPC Programming Competition. (<a href="https://icpc.baylor.edu/" target="_blank">link</a>)</li>
+
+                        </ul>
+                </section>
+            </div>
+
+            <div class="posts pure-u-24-24">
+                <h1 class="content-subhead">Teaching</h1>
+
+                <section class="post post-description_sameline ">
+                        <ul><strong>Fall 2016:</strong> 
+                            <li>CSC  588: Wireless Programming and Security</li>
+                            <li>CSC  495: Cloud-assisted Mobile Sensing System <a href="http://www.cs.wcupa.edu/schen/caterpie/" target="_blank">[Final Project]</a></li>
+                            <li>CSC  110: Fundamentals of Computer Science</li>
+                            <li>CSC  141: Computer Science I -- Introduction to Java Programming</li>
+                        </ul>
+                        <ul><strong>Spring 2017:</strong> 
+                        <li>CSC  141: Computer Science I -- Introduction to Java Programming</li>
+                        <li>CSC  142: Computer Science II -- Java Programming</li>
+                        <li>CSC  115: Introduction to Computer Programming</li>
+                        </ul>
+                        <ul><strong>Fall 2017:</strong> 
+                        <li>CSC  530: Data Structures</li>
+                        <li>CSC  495/583: Topics in Software Security <a href="http://www.cs.wcupa.edu/schen/security/" target="_blank">[Course Website]</a></li>
+                        <li>CSC  141: Computer Science I -- Introduction to Java Programming</li>
+                        </ul>
+
+                        <!--
+                        <ul> <strong>Teaching Assistant:</strong> 
+                            <li>  CSE 241 Digital Systems (<a href="http://www.cse.buffalo.edu/~bina/cse241/spring2016/CourseDescription/description.html" target="_blank">S'16</a>)</li>
+                            <li>  CSE 664 Applied Cryptography and Computer Security (<a href="http://www.acsu.buffalo.edu/~kuiren/courses/CSE664_Syllabus.pdf" target="_blank">S'14</a>)</li>
+                            <strong>Guest Lecturer:</strong> 
+                            <li>  CSE 706 Seminar: Selected Topics in Privacy and Security (F'15)</li>
+                            <li>  CSE 706 Seminar: Sensing, Crowdsourcing with Smartphones and Wearable Devices (<a href="http://www.cse.buffalo.edu/shared/course_instance.php?semester=201409&classnumber=12388" target="_blank">F'14</a>) </li>
+                            <li>  CSE 706 Seminar: Security and Privacy in Emerging Applications (F'13)</li>
+                            <li>  CSE 706 Seminar: Advanced Topics on Privacy Enhancing Technologies (F'12)</li>
+
+                        </ul>
+                        -->
+                </section>
+            </div>
+
+
+
+            <div class="footer">
+                <div class="pure-menu pure-menu-horizontal">
+
+                    <ul>
+                  
+                        <li class="pure-menu-item"> <a href="https://github.com/quake0day/Dodrio" class="pure-menu-link">© 2017 Si Chen. All Rights Reserved | Design by Si Chen | Powered by Dodrio, Flask, Purecss.io</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="pure-u-xl-2-24 pure-u-sm-0-24 pure-u-md-1-24"></div>
+</div>
+
+
+</body>
+</html>

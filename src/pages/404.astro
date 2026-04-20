@@ -1,0 +1,30 @@
+---
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>404 - Page not found | Si Chen</title>
+    <script is:inline src="https://cdn.tailwindcss.com"></script>
+    <script is:inline>
+      tailwind.config = { darkMode: "class" };
+      if (localStorage.getItem("theme") === "dark" || (!localStorage.getItem("theme") && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+        document.documentElement.classList.add("dark");
+      }
+    </script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+      body { font-family: "Inter", system-ui, sans-serif; }
+    </style>
+  </head>
+  <body class="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 min-h-screen flex items-center justify-center">
+    <main class="text-center px-4">
+      <p class="text-7xl font-bold text-gray-900 dark:text-white">404</p>
+      <p class="mt-4 text-lg text-gray-600 dark:text-gray-400">The page you requested is no longer here.</p>
+      <a href="/" class="inline-block mt-8 px-5 py-2 rounded-lg bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors">
+        ← Back to Home
+      </a>
+    </main>
+  </body>
+</html>

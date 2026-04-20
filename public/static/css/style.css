@@ -1,0 +1,34 @@
+/* Body gradient background */
+body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+}
+
+/* Ensure content areas have white background for readability */
+.content {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 4px;
+}
+
+/* Dark mode override */
+body.dark-mode {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    background-attachment: fixed;
+}
+
+body.dark-mode .content {
+    background: rgba(30, 30, 30, 0.95);
+}
+
+.custom-logo img {
+    width: 450px;
+    height: auto;
+}
+
+@media (max-width: 600px) {
+    .pica {
+        width: 300px;
+        height: auto;
+    }
+}

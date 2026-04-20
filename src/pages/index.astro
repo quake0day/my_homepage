@@ -1,0 +1,768 @@
+---
+import publications from "../data/publications.json";
+
+type Entry = {
+  id: number;
+  type: number;
+  title: string;
+  author: string;
+  confname: string;
+  urlpaper: string | null;
+  urlslides: string | null;
+  urlcite: string | null;
+  cite: number;
+  place: number | string | null;
+  year: number;
+  text: string | null;
+  video: string | null;
+  cluster: string | null;
+  urlpdf: string | null;
+  urlaward: string | null;
+  hidden: number;
+};
+
+const entries = publications as Entry[];
+
+const TYPE_LABELS: Record<number, string> = {
+  1: "Conference",
+  2: "Journal",
+  3: "Preprint",
+  4: "Book Chapter",
+};
+
+const allEntriesSorted = [...entries].sort((a, b) => {
+  if (b.year !== a.year) return b.year - a.year;
+  return a.id - b.id;
+});
+const years = Array.from(new Set(allEntriesSorted.map((e) => e.year))).sort(
+  (a, b) => b - a,
+);
+const types = Array.from(new Set(allEntriesSorted.map((e) => e.type))).sort();
+const totalCitations = allEntriesSorted.reduce((sum, e) => sum + (e.cite || 0), 0);
+const totalPapers = allEntriesSorted.length;
+
+const media: Array<[string, string, string]> = [
+  [
+    "https://www.scientificamerican.com/article/can-you-hear-me-now-how-to-protect-yourself-from-voice-hackers/",
+    "sa",
+    "Scientific American",
+  ],
+  [
+    "https://www.cbsnews.com/news/protecting-your-smartphone-from-voice-impersonators/",
+    "cbs",
+    "CBS News",
+  ],
+  [
+    "https://www.sciencedaily.com/releases/2017/06/170605124108.htm",
+    "sd",
+    "Science Daily",
+  ],
+  [
+    "https://www.business-standard.com/article/news-ians/app-to-use-smartphone-compass-to-foil-voice-hacking-117060600474_1.html",
+    "business-standard",
+    "Business Standard",
+  ],
+  [
+    "http://www.techradar.com/news/your-smartphones-compass-can-protect-you-from-voice-hacks",
+    "techradar",
+    "TechRadar",
+  ],
+  [
+    "http://www.buffalo.edu/news/releases/2017/06/007.html",
+    "ub",
+    "University at Buffalo",
+  ],
+  [
+    "http://gadgets.ndtv.com/apps/news/siri-wechat-and-other-apps-may-put-you-at-risk-of-voice-hacking-study-1708501",
+    "gadget360",
+    "Gadget 360",
+  ],
+];
+
+const awards: Array<[string, string, string]> = [
+  [
+    "Best Paper Award",
+    "IEEE TALE, 2025",
+    "/static/files/IEEE_Tale_2025_bestpaper.pdf",
+  ],
+  [
+    'WCU Provost Research Grant for "Harnessing AI for Tailored Educational Experiences"',
+    "2023",
+    "http://galaxymentor.com",
+  ],
+  ["WCU Student Engagement Award", "2023", ""],
+  ["Best Paper Award", "PACISE, 2022", "/static/files/R18_BestPaper.pdf"],
+  ["IEEE Senior Member", "2020", "/static/files/MEMIEEE500.pdf"],
+  [
+    "Best Paper Award",
+    "PACISE, 2019",
+    "/static/files/30_PACISE_Best_Paper.pdf",
+  ],
+  ["Google Cloud Research Grant", "2019", ""],
+  [
+    "WCU Outstanding Faculty Recipients",
+    "2016-2017, 2017-2018",
+    "https://www.wcupa.edu/viceProvost/honorsCollege/documents/OutstandingFacultyReception2016-17.pdf",
+  ],
+  [
+    "Best Student Paper Award",
+    "IEEE ICDCS, 2017",
+    "http://icdcs2017.gatech.edu/awards/",
+  ],
+  ["WCU Research in Mathematics and the Sciences (RIMS) Award", "2016-2017", ""],
+  ["Microsoft Research Azure Research Grant", "2016-2017", ""],
+  [
+    "ACM MobiCom'13 App Competition Finalists",
+    "2013",
+    "http://www.sigmobile.org/mobicom/2013/app_finalists.html",
+  ],
+  ["Student Travel Grant Awards", "IEEE ICDCS, 2015", ""],
+  ["National University Student Innovation Program Award", "2009-2010", ""],
+];
+
+const softwareSecurityYears = [
+  "Fall 2024",
+  "Fall 2023",
+  "Fall 2022",
+  "Fall 2021",
+  "Fall 2020",
+  "Fall 2019",
+  "Fall 2018",
+  "Fall 2017",
+];
+const malwareYears = [
+  "Spring 2025",
+  "Spring 2024",
+  "Spring 2023",
+  "Spring 2022",
+  "Spring 2021",
+  "Spring 2020",
+  "Spring 2019",
+  "Spring 2018",
+];
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Si Chen - Professor of Computer Science at West Chester University. Research in AI, Machine Learning, and Mobile Computing."
+    />
+    <meta
+      name="keywords"
+      content="Si Chen, Computer Science, AI, Machine Learning, West Chester University"
+    />
+    <meta name="author" content="Si Chen" />
+    <title>Si Chen - Professor of Computer Science | West Chester University</title>
+
+    <!-- Tailwind CSS via CDN -->
+    <script is:inline src="https://cdn.tailwindcss.com"></script>
+    <script is:inline>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "system-ui", "-apple-system", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- Lucide Icons -->
+    <script is:inline src="https://unpkg.com/lucide@0.344.0/dist/umd/lucide.min.js"></script>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+      #publications-list { transition: opacity 200ms ease-in-out; }
+      .highlight-author { font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+      .media-card {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.75rem;
+        padding: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 60px;
+        transition: box-shadow 0.2s, border-color 0.2s;
+      }
+      .media-card:hover { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); border-color: #d1d5db; }
+      .dark .media-card { background: #1f2937; border-color: #374151; }
+      .dark .media-card:hover { border-color: #4b5563; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); }
+      .media-card img { max-height: 32px; width: auto; object-fit: contain; }
+      [id] { scroll-margin-top: 80px; }
+    </style>
+  </head>
+
+  <body
+    class="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 antialiased transition-colors duration-300"
+  >
+    <!-- Top navigation bar -->
+    <nav
+      class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700"
+    >
+      <div
+        class="max-w-5xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between"
+      >
+        <a href="#" class="text-lg font-bold text-gray-900 dark:text-white">Si Chen</a>
+        <div class="flex items-center gap-1 sm:gap-2 text-sm">
+          <a href="#about" class="hidden sm:inline-block px-3 py-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">About</a>
+          <a href="#publications" class="hidden sm:inline-block px-3 py-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">Publications</a>
+          <a href="#awards" class="hidden sm:inline-block px-3 py-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">Awards</a>
+          <a href="#teaching" class="hidden sm:inline-block px-3 py-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">Teaching</a>
+          <button
+            id="theme-toggle"
+            class="ml-2 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            aria-label="Toggle dark mode"
+          >
+            <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+            <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 py-8">
+      <!-- ===== HERO / PROFILE ===== -->
+      <section
+        id="about"
+        class="flex flex-col sm:flex-row items-center sm:items-start gap-8 mb-12"
+      >
+        <div class="flex-shrink-0">
+          <picture>
+            <source srcset="/static/images/si.webp" type="image/webp" />
+            <img
+              alt="Si Chen"
+              src="/static/images/si.jpg"
+              class="w-44 h-44 rounded-2xl object-cover shadow-lg"
+              width="176"
+              height="176"
+              loading="eager"
+            />
+          </picture>
+        </div>
+        <div class="text-center sm:text-left">
+          <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">Si Chen</h1>
+          <p class="text-lg text-gray-700 dark:text-gray-300 font-medium mt-1">Professor of Computer Science</p>
+          <p class="text-gray-500 dark:text-gray-400 mt-1">West Chester University of Pennsylvania</p>
+          <p class="text-gray-500 dark:text-gray-400 text-sm">25 University Ave. | Room 131 | West Chester, PA 19383</p>
+          <p class="text-gray-500 dark:text-gray-400 text-sm">Tel: 610-436-6998 | Fax: 610-436-3530</p>
+          <p class="text-sm font-medium text-gray-700 dark:text-gray-300 mt-1">
+            Founder of <a href="https://www.chenaisolutions.us/" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline dark:text-blue-400">Chen AI Solutions LLC</a>
+          </p>
+
+          <!-- Quick links -->
+          <div class="flex flex-wrap justify-center sm:justify-start gap-2 mt-4">
+            <button
+              id="copy-email-btn"
+              class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors cursor-pointer"
+            >
+              <i data-lucide="mail" class="w-4 h-4" id="mail-icon"></i>
+              <span id="copy-email-text">Mail</span>
+            </button>
+            <a href="/static/files/CV.pdf" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg bg-gray-800 dark:bg-gray-700 text-white hover:bg-gray-900 dark:hover:bg-gray-600 transition-colors">
+              <i data-lucide="file-text" class="w-4 h-4"></i> CV
+            </a>
+            <a href="https://scholar.google.com/citations?user=DDLTYpAAAAAJ&hl=en" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+              <i data-lucide="graduation-cap" class="w-4 h-4"></i> Google Scholar
+            </a>
+            <a href="https://www.researchgate.net/profile/Si_Chen11" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+              <i data-lucide="book-open" class="w-4 h-4"></i> ResearchGate
+            </a>
+            <a href="https://badgerctf.com/" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+              <i data-lucide="flag" class="w-4 h-4"></i> BadgerCTF
+            </a>
+            <a href="https://garden.darlingtree.com" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+              <i data-lucide="leaf" class="w-4 h-4"></i> My Garden
+            </a>
+            <a href="http://galaxymentor.com/" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+              <i data-lucide="rocket" class="w-4 h-4"></i> GalaxyMentor
+            </a>
+            <a href="http://picard.cs.wcupa.edu/" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+              <i data-lucide="play-circle" class="w-4 h-4"></i> MoozLab
+            </a>
+            <a href="https://oj.wcpc.fun/" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+              <i data-lucide="trophy" class="w-4 h-4"></i> WCU OJ System
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== ABOUT ===== -->
+      <section class="mb-12">
+        <div class="prose prose-gray dark:prose-invert max-w-none text-base leading-relaxed">
+          <p>
+            As a Professor in the
+            <a href="https://www.cs.wcupa.edu/faculty#Chen" target="_blank" class="text-gray-900 dark:text-gray-100 underline underline-offset-2 hover:underline">
+              Computer Science department at West Chester University of Pennsylvania</a>,
+            my current research interests focus primarily on integrating <strong>artificial intelligence (AI)</strong> with educational technologies to enhance personalized learning experiences and optimize instructional methodologies. My recent work on RAG-based LLM alignment for classroom use received the <strong>Best Paper Award</strong> at <strong>IEEE TALE 2025</strong>. Additionally, I am actively exploring novel approaches that combine <strong>voice transmission technologies with advanced AI models</strong> to improve speech-based human-computer interactions and communication systems.
+          </p>
+          <p class="mt-3">
+            Previously, my research has extensively covered innovative solutions in <strong>mobile sensing</strong> and smartphone-enabled <strong>crowdsourcing technologies</strong>, aiming at building cost-effective and scalable information infrastructures. My scholarly contributions have appeared in highly-regarded journals and conferences such as ACM SenSys, IEEE ICDCS, IEEE MASS, IEEE Transactions on Mobile Computing (TMC), and IEEE IoT Journal. Notably, my paper on human voice detection technologies was awarded the <strong>Best Student Paper Award</strong> at the IEEE ICDCS conference.
+          </p>
+          <p class="mt-3">I am an IEEE Senior Member and an active member of ACM.</p>
+        </div>
+
+        <!-- Featured media -->
+        <div class="mt-8">
+          <p class="text-sm font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-4">Research featured in</p>
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3">
+            {media.map(([url, img, alt]) => (
+              <a href={url} target="_blank" class="media-card" title={alt}>
+                <picture>
+                  <source srcset={`/static/images/${img}.webp`} type="image/webp" />
+                  <img src={`/static/images/${img}.png`} alt={alt} loading="lazy" />
+                </picture>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== PUBLICATIONS with client-side filtering ===== -->
+      <section id="publications" class="mb-12">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+            <i data-lucide="library" class="w-6 h-6 text-gray-900 dark:text-gray-100 underline underline-offset-2"></i>
+            Publications
+            <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
+              (<span id="pub-count-papers">{totalPapers}</span> papers, <span id="pub-count-citations">{totalCitations}</span> citations)
+            </span>
+          </h2>
+        </div>
+
+        <!-- Filters -->
+        <div class="flex flex-wrap items-center gap-3 mb-6 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-xl">
+          <select
+            id="filter-type"
+            class="text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
+          >
+            <option value="">All Types</option>
+            {types.map((t) => (
+              <option value={t}>{TYPE_LABELS[t]}</option>
+            ))}
+          </select>
+
+          <select
+            id="filter-year"
+            class="text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
+          >
+            <option value="">All Years</option>
+            {years.map((y) => (
+              <option value={y}>{y}</option>
+            ))}
+          </select>
+
+          <input
+            id="filter-search"
+            type="search"
+            placeholder="Search publications..."
+            class="flex-1 min-w-[200px] text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
+          />
+
+          <label class="inline-flex items-center gap-1.5 text-sm cursor-pointer select-none ml-auto">
+            <input
+              id="filter-showall"
+              type="checkbox"
+              class="w-4 h-4 rounded border-gray-300 dark:border-gray-600 accent-gray-900 dark:accent-white"
+            />
+            <span class="text-gray-600 dark:text-gray-400">Show All</span>
+          </label>
+        </div>
+
+        <!-- Publication list -->
+        <div id="publications-list">
+          {
+            allEntriesSorted.map((entry) => {
+              const searchIndex = `${entry.title} ${entry.author} ${entry.confname}`.toLowerCase();
+              return (
+                <article
+                  class="group publication-item border-b border-gray-200 dark:border-gray-700 pb-4 mb-4 last:border-0 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors rounded-lg px-3 py-2"
+                  data-type={entry.type}
+                  data-year={entry.year}
+                  data-hidden={entry.hidden ? "1" : "0"}
+                  data-search={searchIndex}
+                >
+                  <div class="flex items-start gap-3">
+                    <!-- Type badge -->
+                    <div class="flex-shrink-0 pt-1">
+                      {entry.type === 1 && (
+                        <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-sm font-bold">C</span>
+                      )}
+                      {entry.type === 2 && (
+                        <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-600 dark:bg-gray-300 text-white dark:text-gray-900 text-sm font-bold">J</span>
+                      )}
+                      {entry.type === 3 && (
+                        <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-400 dark:bg-gray-500 text-white dark:text-gray-100 text-sm font-bold">P</span>
+                      )}
+                      {entry.type === 4 && (
+                        <span class="inline-flex items-center justify-center w-8 h-8 rounded-full border-2 border-gray-900 dark:border-white text-gray-900 dark:text-white text-sm font-bold">B</span>
+                      )}
+                    </div>
+
+                    <!-- Content -->
+                    <div class="flex-1 min-w-0">
+                      <h3 class="text-base font-semibold leading-snug">
+                        {entry.urlpaper ? (
+                          <a href={entry.urlpaper} target="_blank" class="text-gray-900 dark:text-gray-100 hover:underline transition-colors">
+                            {entry.title}
+                          </a>
+                        ) : (
+                          <span class="text-gray-900 dark:text-gray-100">{entry.title}</span>
+                        )}
+                      </h3>
+                      <p class="text-sm text-gray-600 dark:text-gray-400 mt-1 publication-author">{entry.author}</p>
+                      <p class="text-sm text-gray-500 dark:text-gray-500 italic">
+                        {entry.confname}{entry.type === 1 && entry.place ? `, ${entry.place}` : ""}.
+                      </p>
+
+                      <!-- Action links -->
+                      <div class="flex flex-wrap items-center gap-2 mt-2">
+                        {entry.urlpdf && (
+                          <a href={entry.urlpdf} target="_blank" class="inline-flex items-center gap-1 text-xs px-2 py-1 rounded bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                            Paper
+                          </a>
+                        )}
+                        {entry.urlslides && (
+                          <a href={entry.urlslides} target="_blank" class="inline-flex items-center gap-1 text-xs px-2 py-1 rounded bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                            Slides
+                          </a>
+                        )}
+                        {entry.video && (
+                          <a href={entry.video} target="_blank" class="inline-flex items-center gap-1 text-xs px-2 py-1 rounded bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            Video
+                          </a>
+                        )}
+                        {entry.text && entry.urlaward && (
+                          <a href={entry.urlaward} target="_blank" class="inline-flex items-center gap-1 text-xs px-2 py-1 rounded bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors font-medium">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+                            {entry.text}
+                          </a>
+                        )}
+                        {entry.text && !entry.urlaward && (
+                          <span class="inline-flex items-center gap-1 text-xs px-2 py-1 rounded bg-black dark:bg-white text-white dark:text-black font-medium">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+                            {entry.text}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    <!-- Year & Citations -->
+                    <div class="flex-shrink-0 text-right">
+                      <div class="text-sm font-bold text-gray-900 dark:text-gray-100">{entry.year}</div>
+                      {entry.cite > 0 && (
+                        <div class="mt-1 inline-flex items-center gap-1 text-xs text-gray-600 dark:text-gray-400" title="Citations">
+                          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                          {entry.cite}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </article>
+              );
+            })
+          }
+
+          <div id="pub-empty" class="text-center py-12 text-gray-500 dark:text-gray-400 hidden">
+            <svg class="w-12 h-12 mx-auto mb-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+            <p>No publications found matching your criteria.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== MEDIA APPEARANCES ===== -->
+      <section id="media" class="mb-12">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2 mb-4">
+          <i data-lucide="radio" class="w-6 h-6 text-gray-900 dark:text-gray-100 underline underline-offset-2"></i>
+          Media Appearances
+        </h2>
+        <ul class="space-y-3">
+          <li class="flex items-start gap-2">
+            <i data-lucide="mic" class="w-4 h-4 mt-1 text-gray-400 flex-shrink-0"></i>
+            <span>In December 2023, I was interviewed by <strong><a href="https://www.audacy.com/kywnewsradio/news/local/what-to-do-xfinity-data-breach-password-security-reset" target="_blank" class="text-gray-900 dark:text-gray-100 underline underline-offset-2 hover:underline">KYW Newsradio</a></strong> to discuss cybersecurity awareness and recent data breach incidents, highlighting the importance of robust security measures in today's digital landscape.</span>
+          </li>
+        </ul>
+      </section>
+
+      <!-- ===== INVITED TALKS ===== -->
+      <section id="talks" class="mb-12">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2 mb-4">
+          <i data-lucide="presentation" class="w-6 h-6 text-gray-900 dark:text-gray-100 underline underline-offset-2"></i>
+          Invited Talks
+        </h2>
+        <ul class="space-y-3">
+          <li class="flex items-start gap-2">
+            <i data-lucide="calendar" class="w-4 h-4 mt-1 text-gray-400 flex-shrink-0"></i>
+            <span><strong>Invited Speaker at <a href="https://sapagp.org/event/sapa-gp-2025-annual-conference/" target="_blank" class="text-gray-900 dark:text-gray-100 underline underline-offset-2 hover:underline">SAPA-GP 2025 Annual Conference</a></strong> (AI and Data Science Track) - Scheduled for 2025 (<a href="https://sapagp.org/wp-content/uploads/2025/03/2025AC-Brochure.pdf#page=19" target="_blank" class="text-gray-900 dark:text-gray-100 underline underline-offset-2 hover:underline">Conference Brochure, p.19</a>)</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <i data-lucide="calendar" class="w-4 h-4 mt-1 text-gray-400 flex-shrink-0"></i>
+            <span>In May 2021, Dr. Liu Cui and I delivered an invited talk titled <em>"ARSpy: Breaking Location-based, Multi-player Augmented Reality Application for User Location Tracking"</em> based on my ARSpy paper, at the Centers of Academic Excellence (CAE) Forum <a href="https://caecommunity.org/resources/cae-forum-resources" target="_blank" class="text-gray-900 dark:text-gray-100 underline underline-offset-2 hover:underline">[Link]</a>.</span>
+          </li>
+        </ul>
+      </section>
+
+      <!-- ===== HONORS AND AWARDS ===== -->
+      <section id="awards" class="mb-12">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2 mb-4">
+          <i data-lucide="award" class="w-6 h-6 text-gray-900 dark:text-gray-100"></i>
+          Honors and Awards
+        </h2>
+        <div class="space-y-2">
+          {awards.map(([title, detail, link]) => (
+            <div class="flex items-start gap-3 py-2 px-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+              <i data-lucide="star" class="w-4 h-4 mt-0.5 text-gray-900 dark:text-gray-100 flex-shrink-0"></i>
+              <div>
+                {link ? (
+                  <a href={link} target="_blank" class="font-medium text-gray-900 dark:text-white hover:text-gray-600 dark:hover:text-gray-300 transition-colors">{title}</a>
+                ) : (
+                  <span class="font-medium text-gray-900 dark:text-white">{title}</span>
+                )}
+                <span class="text-sm text-gray-500 dark:text-gray-400 ml-1">— {detail}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- ===== SERVICES ===== -->
+      <section id="services" class="mb-12">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2 mb-4">
+          <i data-lucide="users" class="w-6 h-6 text-gray-900 dark:text-gray-100 underline underline-offset-2"></i>
+          Services
+        </h2>
+
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3 flex items-center gap-2">
+          <i data-lucide="briefcase" class="w-5 h-5"></i> Professional Service
+        </h3>
+        <ul class="space-y-2 mb-6 text-sm leading-relaxed">
+          <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span><strong>Guest Editor</strong> for Special Issue "Emerging Sensor Technologies for Enhancing IoT Security and Privacy", MDPI Sensors, 2025</span></li>
+          <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span><strong>Guest Editor</strong> for Collection on Discover Networks, Springer Nature, 2025</span></li>
+          <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span><strong>Advisory Board Member</strong> for the Cybersecurity program, Community College of Philadelphia, 2023–present</span></li>
+          <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span><strong>Research Fellow</strong> at INTI International University, Malaysia, 2023</span></li>
+          <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span><strong>Security Contest Chair</strong> for <a href="https://www.wcupa.edu/sciences-mathematics/computerScience/PACISE2025.aspx" target="_blank" class="text-gray-900 dark:text-gray-100 underline underline-offset-2 hover:underline">PACISE'25</a> (April 4-5, 2025) — <em>The 40th annual Spring Conference hosted by WCU CS Department, with the theme "Cybersecurity in Education"</em></span></li>
+          <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span><strong>Session Chair</strong> at IEEE MILCOM: "Large Language Models" (Track 5.10) at <a href="https://milcom2025.ieee-milcom.org/" target="_blank" class="text-gray-900 dark:text-gray-100 underline underline-offset-2 hover:underline">MILCOM 2025</a>; "Wireless Network Security" and "Signal Intelligence" at MILCOM 2023, 2024</span></li>
+          <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span><strong>Technical Program Committee (TPC)</strong> for IEEE MILCOM (2016–2025)</span></li>
+          <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span><strong>Program Committee</strong> for CIS 2021, FCS 2020, AFEC 2020, MobiQuitous 2019, IEEE CPSCom 2019, ACM/IEEE IoTDI 2019</span></li>
+          <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span><strong>IEEE Senior Member</strong>, 2020–present</span></li>
+          <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span><strong>Regular Reviewer</strong> for IEEE TMC, TDSC, TPDS, TSC, IoT Journal, Network Magazine; INFOCOM, ACM CCS, ICDCS, MobiCom, MobiHoc, AsiaCCS, ESORICS; Computer Networks, MDPI Sensors</span></li>
+        </ul>
+
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3 flex items-center gap-2">
+          <i data-lucide="school" class="w-5 h-5"></i> University Service
+        </h3>
+        <ul class="space-y-2 text-sm leading-relaxed">
+          <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span>Assistant Chair, Department of Computer Science, 2023–2025</span></li>
+          <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span>WCU Research & Creative Activity Advisory Board (RCAAB), 2023–present</span></li>
+          <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span>WCU Committee for Advising Excellence, 2020–present</span></li>
+          <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span>CSM Faculty Proposal Review Committee, 2022–present</span></li>
+          <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span>Graduate Coordinator for Computer Science, 2020–2023</span></li>
+          <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span>Computer System Coordinator/System Administrator for Computer Science, 2019–2025</span></li>
+          <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span>Co-Advisor for WCU Cybersecurity Club, 2020–2025 <a href="https://ramconnect.wcupa.edu/cyber/home/" target="_blank" class="text-gray-900 dark:text-gray-100 underline underline-offset-2 hover:underline">[link]</a></span></li>
+          <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span>Advisor for WCU Computer Science Club, 2017–2021</span></li>
+          <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span>Co-Advisor for Bin Lu Women in Computer Science Club, 2017–2021</span></li>
+          <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span>Coach for ICPC ACM Programming Competition, 2016, 2017</span></li>
+        </ul>
+      </section>
+
+      <!-- ===== TEACHING ===== -->
+      <section id="teaching" class="mb-12">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2 mb-4">
+          <i data-lucide="book-open" class="w-6 h-6 text-gray-900 dark:text-gray-100 underline underline-offset-2"></i>
+          Teaching
+        </h2>
+        <div class="bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-xl p-4 mb-4">
+          <p class="text-gray-800 dark:text-gray-200 font-medium">Academic Year 2025-2026: I am on sabbatical leave.</p>
+        </div>
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">Previous Courses</h3>
+        <div class="grid gap-3 sm:grid-cols-2">
+          <div class="border border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:shadow-md transition-shadow">
+            <div class="flex items-center gap-2 mb-2">
+              <i data-lucide="shield" class="w-5 h-5"></i>
+              <h4 class="font-semibold">Software Security</h4>
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              {softwareSecurityYears.map((year) => (
+                <span class="text-xs px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">{year}</span>
+              ))}
+            </div>
+          </div>
+          <div class="border border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:shadow-md transition-shadow">
+            <div class="flex items-center gap-2 mb-2">
+              <i data-lucide="bug" class="w-5 h-5"></i>
+              <h4 class="font-semibold">Modern Malware Analysis</h4>
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              {malwareYears.map((year) => (
+                <span class="text-xs px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">{year}</span>
+              ))}
+            </div>
+          </div>
+          <div class="border border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:shadow-md transition-shadow">
+            <div class="flex items-center gap-2 mb-2">
+              <i data-lucide="smartphone" class="w-5 h-5 text-gray-400"></i>
+              <h4 class="font-semibold">iOS App Development</h4>
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="text-xs px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">Fall 2023</span>
+            </div>
+          </div>
+          <div class="border border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:shadow-md transition-shadow">
+            <div class="flex items-center gap-2 mb-2">
+              <i data-lucide="graduation-cap" class="w-5 h-5 text-gray-700 dark:text-gray-300"></i>
+              <h4 class="font-semibold">Graduate Advanced Seminar (CSC 600)</h4>
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="text-xs px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">Spring 2025</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-200 dark:border-gray-700 py-6 mt-8">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 text-center text-sm text-gray-500 dark:text-gray-400">
+        &copy; 2026 Si Chen. All Rights Reserved | Built with
+        <a href="https://github.com/quake0day/my_homepage" target="_blank" class="hover:underline">Astro</a>,
+        Tailwind CSS, deployed on Cloudflare Pages
+      </div>
+    </footer>
+
+    <!-- Client-side logic: icons, dark mode, publication filtering, email copy -->
+    <script is:inline>
+      (function () {
+        function initIcons() {
+          if (window.lucide && typeof window.lucide.createIcons === "function") {
+            window.lucide.createIcons();
+          }
+        }
+        initIcons();
+
+        // Dark mode toggle
+        var html = document.documentElement;
+        if (
+          localStorage.getItem("theme") === "dark" ||
+          (!localStorage.getItem("theme") &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches)
+        ) {
+          html.classList.add("dark");
+        }
+        var toggle = document.getElementById("theme-toggle");
+        if (toggle) {
+          toggle.addEventListener("click", function () {
+            html.classList.toggle("dark");
+            localStorage.setItem(
+              "theme",
+              html.classList.contains("dark") ? "dark" : "light",
+            );
+            initIcons();
+          });
+        }
+
+        // Copy email to clipboard
+        var copyBtn = document.getElementById("copy-email-btn");
+        if (copyBtn) {
+          copyBtn.addEventListener("click", function () {
+            var email = "schen" + "@" + "wcupa.edu";
+            var text = document.getElementById("copy-email-text");
+            var icon = document.getElementById("mail-icon");
+            navigator.clipboard
+              .writeText(email)
+              .then(function () {
+                if (text) text.textContent = "Copied!";
+                if (icon) {
+                  icon.setAttribute("data-lucide", "check");
+                  initIcons();
+                }
+                setTimeout(function () {
+                  if (text) text.textContent = "Mail";
+                  if (icon) {
+                    icon.setAttribute("data-lucide", "mail");
+                    initIcons();
+                  }
+                }, 2000);
+              })
+              .catch(function () {
+                window.location.href = "mailto:" + email;
+              });
+          });
+        }
+
+        // Highlight "Si Chen" in publication authors
+        document.querySelectorAll(".publication-author").forEach(function (el) {
+          el.innerHTML = el.innerHTML.replace(
+            /\bSi Chen\b/g,
+            '<span class="highlight-author">Si Chen</span>',
+          );
+        });
+
+        // Client-side publication filtering
+        var typeSel = document.getElementById("filter-type");
+        var yearSel = document.getElementById("filter-year");
+        var searchInp = document.getElementById("filter-search");
+        var showAllChk = document.getElementById("filter-showall");
+        var empty = document.getElementById("pub-empty");
+        var items = Array.prototype.slice.call(
+          document.querySelectorAll(".publication-item"),
+        );
+
+        function applyFilters() {
+          var t = typeSel ? typeSel.value : "";
+          var y = yearSel ? yearSel.value : "";
+          var q = searchInp ? searchInp.value.trim().toLowerCase() : "";
+          var showAll = showAllChk ? showAllChk.checked : false;
+          var visibleCount = 0;
+          items.forEach(function (el) {
+            var entryType = el.getAttribute("data-type") || "";
+            var entryYear = el.getAttribute("data-year") || "";
+            var entryHidden = el.getAttribute("data-hidden") === "1";
+            var entrySearch = el.getAttribute("data-search") || "";
+            var show = true;
+            if (!showAll && entryHidden) show = false;
+            if (show && t && entryType !== t) show = false;
+            if (show && y && entryYear !== y) show = false;
+            if (show && q && entrySearch.indexOf(q) === -1) show = false;
+            el.style.display = show ? "" : "none";
+            if (show) visibleCount++;
+          });
+          if (empty) empty.style.display = visibleCount === 0 ? "" : "none";
+        }
+
+        if (typeSel) typeSel.addEventListener("change", applyFilters);
+        if (yearSel) yearSel.addEventListener("change", applyFilters);
+        if (searchInp) {
+          var searchTimer;
+          searchInp.addEventListener("input", function () {
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(applyFilters, 200);
+          });
+        }
+        if (showAllChk) showAllChk.addEventListener("change", applyFilters);
+        applyFilters();
+      })();
+    </script>
+
+    <!-- Google Analytics -->
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=UA-8217718-2"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "UA-8217718-2");
+    </script>
+  </body>
+</html>

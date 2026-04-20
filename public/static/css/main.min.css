@@ -1,0 +1,36 @@
+/* Si Chen's Homepage - Optimized CSS */
+
+/* Post descriptions use Georgia font as per original blog.css */
+.post-description,.post-description_sameline{font-family:Georgia,"Cambria",serif;color:#444;line-height:1.8em}
+
+/* Button Styles */
+.button-success,.button-error,.button-warning,.button-secondary{font-size:11px;color:white;border-radius:0;text-shadow:0 1px 1px rgba(0,0,0,0.2)}
+.button-success{background:rgb(28,184,65)}
+.button-error{background:rgb(202,60,60)}
+.button-warning{background:rgb(223,117,20)}
+.button-secondary{background:rgb(66,184,221)}
+
+/* Navigation */
+.nav-list .nav-item{margin-right:0.5em;margin-bottom:0.5em;display:inline-block}
+
+/* Media Logos */
+.media-logo{display:flex;align-items:center;justify-content:center;padding:1em 0.5em;transition:all 0.3s ease;overflow:hidden}
+.media-logo img{max-width:110px;width:90%;height:auto;max-height:60px;object-fit:contain;filter:grayscale(100%);opacity:0.7;transition:all 0.3s ease}
+.media-logo:hover img{filter:grayscale(0%);opacity:1;transform:scale(1.1)}
+
+/* Responsive Grid for Media */
+.pure-u-lg-1-7{width:14.2857%}
+@media screen and (min-width:1024px){.media-logo img{max-width:120px;max-height:70px}}
+@media screen and (max-width:1023px) and (min-width:768px){.media-logo img{max-width:100px;max-height:60px}}
+@media screen and (max-width:767px){.media-logo img{max-width:90px;max-height:50px}}
+@media screen and (max-width:480px){.media-logo img{max-width:80px;max-height:45px}}
+
+/* Dark Mode Support */
+body.dark-mode{background:#121212;color:#e0e0e0}
+body.dark-mode a{color:#4ea3f1}
+body.dark-mode .pure-button-primary{background-color:#2980b9;color:#fff}
+body.dark-mode .footer{background:#000;color:#999}
+
+/* Custom Logo Styles */
+.custom-logo img{width:450px;height:auto}
+@media (max-width:600px){.pica{width:300px;height:auto}}

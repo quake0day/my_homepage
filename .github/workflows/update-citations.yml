@@ -1,0 +1,38 @@
+name: Update Scholar citations
+
+on:
+  schedule:
+    # Sundays 03:00 UTC (matches the old Linode cron)
+    - cron: "0 3 * * 0"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run citation updater
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python scripts/update_citations.py
+
+      - name: Commit changes if any
+        run: |
+          git config user.name  "citation-bot"
+          git config user.email "citation-bot@users.noreply.github.com"
+          if git diff --quiet src/data/publications.json; then
+            echo "No citation changes."
+          else
+            git add src/data/publications.json
+            git commit -m "chore: weekly citation refresh ($(date -u +%Y-%m-%d))"
+            git push
+          fi
