@@ -44,19 +44,30 @@ pnpm preview    # serve dist/
 
 ## Citation auto-update
 
-`.github/workflows/update-citations.yml` runs every Sunday at 03:00 UTC.
-It scrapes Google Scholar (profile `DDLTYpAAAAAJ`), uses **Cloudflare Workers AI
-(Kimi K2.6)** to parse results, matches them to `publications.json` by title
-similarity, and commits any changes back — which triggers the next deploy.
+The weekly Scholar citation refresh runs on **PVE LXC 181** (`citation-bot`,
+`192.168.68.61`), not GitHub Actions. Google Scholar returns 403 for Azure
+datacenter IPs, so the residential-IP home-lab container is the only reliable
+runner.
 
-Required GitHub secrets (Settings → Secrets and variables → Actions):
-- `CLOUDFLARE_API_TOKEN` — API token with **Workers AI Read** permission. Create
-  at https://dash.cloudflare.com/profile/api-tokens ("Create Token" → use the
-  "Workers AI" template, or custom with `Account.Workers AI: Read`).
-- `CLOUDFLARE_ACCOUNT_ID` — your Cloudflare account ID
-  (`046c617ae6ff124ea360c3a6117188d5`).
+**Container setup** (already deployed):
+- Debian 12, 1 vCPU / 512 MB RAM / 4 GB disk, DHCP on vmbr0
+- Shallow clone of this repo at `/root/my_homepage`, pulled via SSH deploy key
+- `/root/my_homepage/.env` holds `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID`
+- Cron: `0 3 * * 0 /root/my_homepage/scripts/cron_update.sh >> /var/log/citation-bot.log 2>&1`
+- `scripts/cron_update.sh`: pulls, runs updater, commits+pushes only if changed.
 
-No third-party API key needed — everything runs through Cloudflare.
+**Pipeline:** Scholar scrape → Cloudflare Workers AI (`@cf/moonshotai/kimi-k2.6`)
+parses the HTML → fuzzy-match titles against `publications.json` → commit+push.
+
+**Ops:**
+```bash
+ssh root@192.168.68.61                     # enter container
+/root/my_homepage/scripts/cron_update.sh   # manual run
+tail -n 50 /var/log/citation-bot.log       # check cron output
+```
+
+The `.github/workflows/update-citations.yml` file is kept as a `workflow_dispatch`
+fallback only — schedule was disabled because it always 403'd.
 
 ## Deploy
 

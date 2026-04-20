@@ -1,9 +1,11 @@
-name: Update Scholar citations
+name: Update Scholar citations (disabled — use PVE LXC 181 instead)
+
+# NOTE: The weekly cron lives on PVE LXC 181 (citation-bot, 192.168.68.61).
+# Google Scholar blocks GitHub Actions' Azure datacenter IPs (403), so this
+# workflow cannot run on schedule. It's kept as a manual fallback only — if
+# GitHub ever peers residential IP runners, re-enable the schedule.
 
 on:
-  schedule:
-    # Sundays 03:00 UTC (matches the old Linode cron)
-    - cron: "0 3 * * 0"
   workflow_dispatch: {}
 
 permissions:
@@ -14,26 +16,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-
-      - name: Run citation updater (Cloudflare Workers AI / Kimi K2.6)
+      - name: Run citation updater
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: python scripts/update_citations.py
-
-      - name: Commit changes if any
+      - name: Commit if changed
         run: |
           git config user.name  "citation-bot"
           git config user.email "citation-bot@users.noreply.github.com"
-          if git diff --quiet src/data/publications.json; then
-            echo "No citation changes."
-          else
+          if ! git diff --quiet src/data/publications.json; then
             git add src/data/publications.json
-            git commit -m "chore: weekly citation refresh ($(date -u +%Y-%m-%d))"
+            git commit -m "chore: citation refresh ($(date -u +%Y-%m-%d))"
             git push
           fi
