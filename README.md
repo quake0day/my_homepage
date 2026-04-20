@@ -45,11 +45,18 @@ pnpm preview    # serve dist/
 ## Citation auto-update
 
 `.github/workflows/update-citations.yml` runs every Sunday at 03:00 UTC.
-It scrapes Google Scholar (profile `DDLTYpAAAAAJ`), uses Claude Haiku to parse
-results, matches them to `publications.json` by title similarity, and commits
-any changes back — which triggers a new Cloudflare Pages build.
+It scrapes Google Scholar (profile `DDLTYpAAAAAJ`), uses **Cloudflare Workers AI
+(Kimi K2.6)** to parse results, matches them to `publications.json` by title
+similarity, and commits any changes back — which triggers the next deploy.
 
-Required secret: `ANTHROPIC_API_KEY` (set in GitHub → Settings → Secrets).
+Required GitHub secrets (Settings → Secrets and variables → Actions):
+- `CLOUDFLARE_API_TOKEN` — API token with **Workers AI Read** permission. Create
+  at https://dash.cloudflare.com/profile/api-tokens ("Create Token" → use the
+  "Workers AI" template, or custom with `Account.Workers AI: Read`).
+- `CLOUDFLARE_ACCOUNT_ID` — your Cloudflare account ID
+  (`046c617ae6ff124ea360c3a6117188d5`).
+
+No third-party API key needed — everything runs through Cloudflare.
 
 ## Deploy
 

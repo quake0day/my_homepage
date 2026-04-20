@@ -2,8 +2,8 @@
 """
 Weekly citation updater for publications.json.
 
-Scrapes Google Scholar, uses Claude API to parse, updates src/data/publications.json.
-Ported from the original SQLite-based updater for the static site.
+Scrapes Google Scholar, uses Cloudflare Workers AI (Kimi K2.6) to parse,
+updates src/data/publications.json.
 """
 
 import json
@@ -19,7 +19,9 @@ from urllib.request import Request, urlopen
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_ROOT = os.path.dirname(SCRIPT_DIR)
 DATA_PATH = os.path.join(REPO_ROOT, "src", "data", "publications.json")
-API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
+CF_TOKEN = os.environ.get("CLOUDFLARE_API_TOKEN", "")
+CF_ACCOUNT = os.environ.get("CLOUDFLARE_ACCOUNT_ID", "")
+CF_MODEL = os.environ.get("CF_AI_MODEL", "@cf/moonshotai/kimi-k2.6")
 SCHOLAR_PROFILE = os.environ.get("SCHOLAR_PROFILE", "DDLTYpAAAAAJ")
 
 logging.basicConfig(
@@ -78,27 +80,40 @@ def fetch_scholar_profile():
     return "\n<!-- PAGE_BREAK -->\n".join(pages)
 
 
-def call_claude(prompt, max_tokens=4096):
-    url = "https://api.anthropic.com/v1/messages"
+def call_ai(prompt, max_tokens=8192):
+    """Call Cloudflare Workers AI (Kimi K2.6 by default)."""
+    url = "https://api.cloudflare.com/client/v4/accounts/{}/ai/run/{}".format(
+        CF_ACCOUNT, CF_MODEL
+    )
     headers = {
         "Content-Type": "application/json",
-        "x-api-key": API_KEY,
-        "anthropic-version": "2023-06-01",
+        "Authorization": "Bearer " + CF_TOKEN,
     }
     body = json.dumps(
         {
-            "model": "claude-haiku-4-5-20251001",
-            "max_tokens": max_tokens,
             "messages": [{"role": "user", "content": prompt}],
+            "max_tokens": max_tokens,
         }
     ).encode("utf-8")
     req = Request(url, data=body, headers=headers, method="POST")
     try:
-        resp = urlopen(req, timeout=60)
+        resp = urlopen(req, timeout=90)
         data = json.loads(resp.read().decode("utf-8"))
-        return data["content"][0]["text"]
+        if not data.get("success"):
+            log.error("CF Workers AI error: %s", data.get("errors"))
+            return None
+        choice = data["result"]["choices"][0]
+        content = choice.get("message", {}).get("content")
+        if content:
+            return content
+        log.error(
+            "CF Workers AI returned empty content (finish_reason=%s, usage=%s)",
+            choice.get("finish_reason"),
+            data["result"].get("usage"),
+        )
+        return None
     except Exception as exc:
-        log.error("Claude API call failed: %s", exc)
+        log.error("CF Workers AI call failed: %s", exc)
         return None
 
 
@@ -141,8 +156,8 @@ def parse_citations_with_ai(html):
         "Return ONLY the JSON array, nothing else.\n\n"
         "Data:\n" + "\n".join(raw_rows)
     )
-    log.info("Calling Claude API to parse citations...")
-    result = call_claude(prompt)
+    log.info("Calling Cloudflare Workers AI (%s) to parse citations...", CF_MODEL)
+    result = call_ai(prompt)
     if result is None:
         return None
     try:
@@ -230,8 +245,8 @@ def main():
     log.info("=" * 50)
     log.info("Citation update started at %s", datetime.now(timezone.utc).isoformat())
 
-    if not API_KEY:
-        log.error("ANTHROPIC_API_KEY not set. Exiting.")
+    if not CF_TOKEN or not CF_ACCOUNT:
+        log.error("CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID must both be set. Exiting.")
         sys.exit(1)
     if not os.path.exists(DATA_PATH):
         log.error("Data not found at %s", DATA_PATH)
