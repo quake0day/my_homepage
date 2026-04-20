@@ -7,7 +7,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "publish:cf": "pnpm build && find dist -type f -size +24M -print -delete && npx wrangler pages deploy dist --project-name=my-homepage --branch=main --commit-dirty=true"
   },
   "dependencies": {
     "astro": "^5.14.0"
