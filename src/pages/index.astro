@@ -81,6 +81,11 @@ const media: Array<[string, string, string]> = [
 
 const awards: Array<[string, string, string]> = [
   [
+    'PASSHE Faculty Professional Development Council (FPDC) Grant for "Reconstructing Student Thought Processes Through AI-Powered Analysis of Programming Submission Trajectories" ($9,372)',
+    "2026",
+    "",
+  ],
+  [
     "Best Paper Award",
     "IEEE TALE, 2025",
     "/static/files/IEEE_Tale_2025_bestpaper.pdf",
@@ -157,6 +162,17 @@ const malwareYears = [
     />
     <meta name="author" content="Si Chen" />
     <title>Si Chen - Professor of Computer Science | West Chester University</title>
+
+    <!-- Theme init: default light, only apply dark if user explicitly toggled -->
+    <script is:inline>
+      (function () {
+        try {
+          if (localStorage.getItem("theme") === "dark") {
+            document.documentElement.classList.add("dark");
+          }
+        } catch (e) {}
+      })();
+    </script>
 
     <!-- Tailwind CSS via CDN -->
     <script is:inline src="https://cdn.tailwindcss.com"></script>
@@ -557,9 +573,10 @@ const malwareYears = [
           <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span><strong>Guest Editor</strong> for Collection on Discover Networks, Springer Nature, 2025</span></li>
           <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span><strong>Advisory Board Member</strong> for the Cybersecurity program, Community College of Philadelphia, 2023–present</span></li>
           <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span><strong>Research Fellow</strong> at INTI International University, Malaysia, 2023</span></li>
-          <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span><strong>Security Contest Chair</strong> for <a href="https://www.wcupa.edu/sciences-mathematics/computerScience/PACISE2025.aspx" target="_blank" class="text-gray-900 dark:text-gray-100 underline underline-offset-2 hover:underline">PACISE'25</a> (April 4-5, 2025) — <em>The 40th annual Spring Conference hosted by WCU CS Department, with the theme "Cybersecurity in Education"</em></span></li>
+          <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span><strong>Security Contest Chair</strong> for <a href="https://www.engr.ship.edu/about/pacise2/pacise-2026/" target="_blank" class="text-gray-900 dark:text-gray-100 underline underline-offset-2 hover:underline">PACISE'26</a> (April 10, 2026) — <em>The 41st annual Spring Conference hosted by Shippensburg University; 7 teams competed across 10 Web / Crypto / Binary Exploitation challenges</em> <a href="https://pacise26.badgerctf.com/" target="_blank" class="text-gray-900 dark:text-gray-100 underline underline-offset-2 hover:underline">[contest]</a></span></li>
+          <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span><strong>Security Contest Chair</strong> for <a href="https://www.wcupa.edu/sciences-mathematics/computerScience/PACISE2025.aspx" target="_blank" class="text-gray-900 dark:text-gray-100 underline underline-offset-2 hover:underline">PACISE'25</a> (April 4-5, 2025) — <em>The 40th annual Spring Conference hosted by WCU CS Department, with the theme "Cybersecurity in Education"</em> <a href="https://pacise25.badgerctf.com/" target="_blank" class="text-gray-900 dark:text-gray-100 underline underline-offset-2 hover:underline">[contest]</a></span></li>
           <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span><strong>Session Chair</strong> at IEEE MILCOM: "Large Language Models" (Track 5.10) at <a href="https://milcom2025.ieee-milcom.org/" target="_blank" class="text-gray-900 dark:text-gray-100 underline underline-offset-2 hover:underline">MILCOM 2025</a>; "Wireless Network Security" and "Signal Intelligence" at MILCOM 2023, 2024</span></li>
-          <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span><strong>Technical Program Committee (TPC)</strong> for IEEE MILCOM (2016–2025)</span></li>
+          <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span><strong>Technical Program Committee (TPC)</strong> for IEEE MILCOM (2016–2026)</span></li>
           <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span><strong>Program Committee</strong> for CIS 2021, FCS 2020, AFEC 2020, MobiQuitous 2019, IEEE CPSCom 2019, ACM/IEEE IoTDI 2019</span></li>
           <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span><strong>IEEE Senior Member</strong>, 2020–present</span></li>
           <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span><strong>Regular Reviewer</strong> for IEEE TMC, TDSC, TPDS, TSC, IoT Journal, Network Magazine; INFOCOM, ACM CCS, ICDCS, MobiCom, MobiHoc, AsiaCCS, ESORICS; Computer Networks, MDPI Sensors</span></li>
@@ -656,15 +673,8 @@ const malwareYears = [
         }
         initIcons();
 
-        // Dark mode toggle
+        // Dark mode toggle (default light; respects only explicit user choice)
         var html = document.documentElement;
-        if (
-          localStorage.getItem("theme") === "dark" ||
-          (!localStorage.getItem("theme") &&
-            window.matchMedia("(prefers-color-scheme: dark)").matches)
-        ) {
-          html.classList.add("dark");
-        }
         var toggle = document.getElementById("theme-toggle");
         if (toggle) {
           toggle.addEventListener("click", function () {
