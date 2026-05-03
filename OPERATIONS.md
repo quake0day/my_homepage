@@ -12,7 +12,7 @@
                                             ▲
             ┌───────────────────────────────┘
             │ git push(每周日 03:00 UTC,只改 publications.json)
-┌─ PVE LXC 181 (192.168.68.61) ─┐
+┌─ PVE LXC 181 (192.168.68.62) ─┐
 │  cron_update.sh               │
 │  Scholar 抓 → Kimi K2.6 解析  │
 └────────────────────────────────┘
@@ -115,7 +115,7 @@ npx wrangler r2 object put "darlingtree-assets/files/HugeBrochure.pdf" \
 ### 🔄 手动跑一次 citation 更新(立即)
 
 ```fish
-ssh root@192.168.68.61 /root/my_homepage/scripts/cron_update.sh
+ssh root@192.168.68.62 /root/my_homepage/scripts/cron_update.sh
 ```
 
 输出会直接显示。有改动会自动 `git push`。push 完**要手动部署**(见下):
@@ -127,7 +127,7 @@ cd ~/my_homepage && git pull && pnpm run publish:cf
 ### 🔍 看上次 cron 跑了啥
 
 ```fish
-ssh root@192.168.68.61 'tail -n 80 /var/log/citation-bot.log'
+ssh root@192.168.68.62 'tail -n 80 /var/log/citation-bot.log'
 ```
 
 ---
@@ -192,10 +192,10 @@ pnpm preview  # 预览构建产物
 
 ```fish
 # 最近日志
-ssh root@192.168.68.61 'tail -n 80 /var/log/citation-bot.log'
+ssh root@192.168.68.62 'tail -n 80 /var/log/citation-bot.log'
 
 # cron 本身是否还在
-ssh root@192.168.68.61 'crontab -l'
+ssh root@192.168.68.62 'crontab -l'
 
 # LXC 是否还活着
 curl -sk "https://192.168.68.56:8006/api2/json/nodes/quake0day/lxc/181/status/current" \
@@ -205,7 +205,7 @@ curl -sk "https://192.168.68.56:8006/api2/json/nodes/quake0day/lxc/181/status/cu
 ### 手动重跑
 
 ```fish
-ssh root@192.168.68.61 /root/my_homepage/scripts/cron_update.sh
+ssh root@192.168.68.62 /root/my_homepage/scripts/cron_update.sh
 ```
 
 ### 为什么不用 GitHub Actions
@@ -216,14 +216,14 @@ Scholar 会 403 封 Azure 数据中心 IP。GH Actions 跑出来永远失败。`
 
 ## LXC 181(citation-bot)运维
 
-**身份:** 192.168.68.61,Debian 12,1 vCPU / 512M / 4G,hostname `citation-bot`
-**SSH:** `ssh root@192.168.68.61`(你的 `~/.ssh/id_ed25519.pub` 已授权)
+**身份:** 192.168.68.62,Debian 12,1 vCPU / 512M / 4G,hostname `citation-bot`
+**SSH:** `ssh root@192.168.68.62`(你的 `~/.ssh/id_ed25519.pub` 已授权)
 
 ### 常用操作
 
 ```fish
 # 进 shell
-ssh root@192.168.68.61
+ssh root@192.168.68.62
 
 # 重启
 curl -sk -X POST "https://192.168.68.56:8006/api2/json/nodes/quake0day/lxc/181/status/reboot" \
@@ -233,11 +233,11 @@ curl -sk -X POST "https://192.168.68.56:8006/api2/json/nodes/quake0day/lxc/181/s
 # 把 reboot 换成 stop / start
 
 # 更新 CF API token(比如轮换后)
-ssh root@192.168.68.61 'nano /root/my_homepage/.env'
+ssh root@192.168.68.62 'nano /root/my_homepage/.env'
 
 # 同步最新代码(脚本改动后)
 # cron_update.sh 每次跑都会自动 git pull,一般不用手动
-ssh root@192.168.68.61 'cd /root/my_homepage && git pull'
+ssh root@192.168.68.62 'cd /root/my_homepage && git pull'
 ```
 
 ### LXC 磁盘满了怎么办
@@ -245,9 +245,9 @@ ssh root@192.168.68.61 'cd /root/my_homepage && git pull'
 4GB 应该永远用不完(clone 占 1.1G)。如果满了:
 
 ```fish
-ssh root@192.168.68.61 'du -sh /var/log/* /root/my_homepage/.git | sort -h'
+ssh root@192.168.68.62 'du -sh /var/log/* /root/my_homepage/.git | sort -h'
 # 通常是 /var/log/citation-bot.log 太大 → 截断或 logrotate
-ssh root@192.168.68.61 'truncate -s 0 /var/log/citation-bot.log'
+ssh root@192.168.68.62 'truncate -s 0 /var/log/citation-bot.log'
 ```
 
 ---
