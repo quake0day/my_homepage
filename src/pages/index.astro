@@ -40,6 +40,8 @@ const years = Array.from(new Set(allEntriesSorted.map((e) => e.year))).sort(
 const types = Array.from(new Set(allEntriesSorted.map((e) => e.type))).sort();
 const totalCitations = allEntriesSorted.reduce((sum, e) => sum + (e.cite || 0), 0);
 const totalPapers = allEntriesSorted.length;
+const hIndex = 11;
+const i10Index = 12;
 
 const media: Array<[string, string, string]> = [
   [
@@ -353,7 +355,7 @@ const malwareYears = [
             <i data-lucide="library" class="w-6 h-6 text-gray-900 dark:text-gray-100 underline underline-offset-2"></i>
             Selected Publications
             <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
-              (<span id="pub-count-papers">{totalPapers}</span> papers, <span id="pub-count-citations">{totalCitations}</span> citations)
+              (<span id="pub-count-papers">{totalPapers}</span> papers, <span id="pub-count-citations">{totalCitations}</span> citations, h-index {hIndex}, i10-index {i10Index})
             </span>
           </h2>
         </div>

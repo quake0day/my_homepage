@@ -24,6 +24,14 @@ CF_ACCOUNT = os.environ.get("CLOUDFLARE_ACCOUNT_ID", "")
 CF_MODEL = os.environ.get("CF_AI_MODEL", "@cf/moonshotai/kimi-k2.6")
 SCHOLAR_PROFILE = os.environ.get("SCHOLAR_PROFILE", "DDLTYpAAAAAJ")
 
+# Manual aliases: Scholar title (lowercased exact) -> JSON entry id.
+# Use for unmatchable cases like generic chapter titles ("Authentication"
+# points to "Encyclopedia of Wireless Networks (Section: ...)"). Cites from
+# all matching Scholar rows are summed onto the JSON id.
+SCHOLAR_TITLE_ALIASES = {
+    "authentication": 61,  # Encyclopedia of Wireless Networks chapter
+}
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
@@ -170,21 +178,41 @@ def parse_citations_with_ai(html):
     return None
 
 
+def _normalize(s):
+    """Lowercase, drop non-alphanumeric, collapse whitespace.
+    Makes 'TT-SVD' == 'TTSVD', 'Crowd map' == 'CrowdMap'."""
+    import re
+    return re.sub(r"\s+", " ", re.sub(r"[^a-z0-9 ]+", "", s.lower())).strip()
+
+
 def score_match(a, b):
-    a = a.strip().lower()
-    b = b.strip().lower()
-    if a == b:
+    a_raw = a.strip().lower()
+    b_raw = b.strip().lower()
+    if a_raw == b_raw:
         return 100
-    if a in b or b in a:
-        return 80
+    a = _normalize(a)
+    b = _normalize(b)
+    if not a or not b:
+        return 0
+    # Normalized exact / prefix / substring
+    a_nospace = a.replace(" ", "")
+    b_nospace = b.replace(" ", "")
+    if a_nospace == b_nospace:
+        return 95
+    if a_nospace in b_nospace or b_nospace in a_nospace:
+        # Require substantial overlap for substring to count
+        shorter = min(len(a_nospace), len(b_nospace))
+        longer = max(len(a_nospace), len(b_nospace))
+        if shorter >= 8 and shorter / longer >= 0.3:
+            return 85
     if len(a) > 40 and a[:40] == b[:40]:
         return 70
     a_words = set(a.split())
     b_words = set(b.split())
-    if len(a_words) > 3 and len(b_words) > 3:
+    if len(a_words) >= 3 and len(b_words) >= 3:
         overlap = len(a_words & b_words) / max(len(a_words), len(b_words))
-        if overlap > 0.7:
-            return int(overlap * 60)
+        if overlap >= 0.5:
+            return int(overlap * 80)
     return 0
 
 
@@ -192,8 +220,11 @@ def update_publications(citation_data):
     with open(DATA_PATH, "r", encoding="utf-8") as fh:
         entries = json.load(fh)
 
-    updated = 0
-    matched_ids = set()
+    # Many-to-one: a JSON entry can receive cites from multiple Scholar
+    # entries (Scholar sometimes splits the same paper into separate records,
+    # e.g. "TT-SVD" + "TTSVD", or two "Q-CARs Poster" variants). Sum them.
+    accumulated = {}  # json_id -> total cites across all matching Scholar rows
+    unmatched = []
 
     for paper in citation_data:
         scholar_title = paper.get("title", "")
@@ -202,31 +233,47 @@ def update_publications(citation_data):
         except (TypeError, ValueError):
             continue
 
-        best_id = None
-        best_score = 0
-        best_title = ""
-        for entry in entries:
-            if entry["id"] in matched_ids:
-                continue
-            score = score_match(scholar_title, entry["title"])
-            if score > best_score:
-                best_score = score
-                best_id = entry["id"]
-                best_title = entry["title"]
+        alias_id = SCHOLAR_TITLE_ALIASES.get(scholar_title.strip().lower())
+        if alias_id is not None:
+            best_id, best_score, best_title = alias_id, 100, "(alias)"
+        else:
+            best_id = None
+            best_score = 0
+            best_title = ""
+            for entry in entries:
+                score = score_match(scholar_title, entry["title"])
+                if score > best_score:
+                    best_score = score
+                    best_id = entry["id"]
+                    best_title = entry["title"]
 
         if best_id is not None and best_score >= 50:
-            for entry in entries:
-                if entry["id"] == best_id and entry.get("cite", 0) != citations:
-                    entry["cite"] = citations
-                    log.info(
-                        "Updated [%d] %s -> %d (score=%d)",
-                        best_id,
-                        best_title[:50],
-                        citations,
-                        best_score,
-                    )
-                    updated += 1
-            matched_ids.add(best_id)
+            accumulated[best_id] = accumulated.get(best_id, 0) + citations
+            log.info(
+                "Match: %s (%d cites) -> [%d] %s (score=%d)",
+                scholar_title[:55],
+                citations,
+                best_id,
+                best_title[:45],
+                best_score,
+            )
+        else:
+            unmatched.append((scholar_title, citations))
+
+    updated = 0
+    for entry in entries:
+        if entry["id"] in accumulated:
+            new_cite = accumulated[entry["id"]]
+            if entry.get("cite", 0) != new_cite:
+                log.info(
+                    "Updated [%d] %s: %d -> %d",
+                    entry["id"],
+                    entry["title"][:50],
+                    entry.get("cite", 0),
+                    new_cite,
+                )
+                entry["cite"] = new_cite
+                updated += 1
 
     with open(DATA_PATH, "w", encoding="utf-8") as fh:
         json.dump(entries, fh, indent=2, ensure_ascii=False)
@@ -238,6 +285,10 @@ def update_publications(citation_data):
     log.info("Papers updated: %d / %d", updated, len(entries))
     log.info("Papers with citations: %d", with_cites)
     log.info("Total citations: %d", total)
+    if unmatched:
+        log.warning("Unmatched Scholar entries (%d):", len(unmatched))
+        for t, c in unmatched:
+            log.warning("  [%d cites] %s", c, t[:80])
     return updated, total
 
 
