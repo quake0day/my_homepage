@@ -351,7 +351,7 @@ const malwareYears = [
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
           <h2 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
             <i data-lucide="library" class="w-6 h-6 text-gray-900 dark:text-gray-100 underline underline-offset-2"></i>
-            Publications
+            Selected Publications
             <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
               (<span id="pub-count-papers">{totalPapers}</span> papers, <span id="pub-count-citations">{totalCitations}</span> citations)
             </span>
@@ -408,6 +408,7 @@ const malwareYears = [
                   data-type={entry.type}
                   data-year={entry.year}
                   data-hidden={entry.hidden ? "1" : "0"}
+                  data-cite={entry.cite || 0}
                   data-search={searchIndex}
                 >
                   <div class="flex items-start gap-3">
@@ -744,9 +745,10 @@ const malwareYears = [
             var entryType = el.getAttribute("data-type") || "";
             var entryYear = el.getAttribute("data-year") || "";
             var entryHidden = el.getAttribute("data-hidden") === "1";
+            var entryCite = parseInt(el.getAttribute("data-cite") || "0", 10);
             var entrySearch = el.getAttribute("data-search") || "";
             var show = true;
-            if (!showAll && entryHidden) show = false;
+            if (!showAll && (entryHidden || entryCite === 0)) show = false;
             if (show && t && entryType !== t) show = false;
             if (show && y && entryYear !== y) show = false;
             if (show && q && entrySearch.indexOf(q) === -1) show = false;
