@@ -41,7 +41,7 @@ const types = Array.from(new Set(allEntriesSorted.map((e) => e.type))).sort();
 const totalCitations = allEntriesSorted.reduce((sum, e) => sum + (e.cite || 0), 0);
 const totalPapers = allEntriesSorted.length;
 const hIndex = 11;
-const i10Index = 12;
+const i10Index = 11;
 
 const media: Array<[string, string, string]> = [
   [
