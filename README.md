@@ -71,6 +71,12 @@ fallback only — schedule was disabled because it always 403'd.
 
 ## Deploy
 
-Cloudflare Pages is wired to this repo's `main` branch with build command
-`pnpm build` and output directory `dist`. The production domain is
-`darlingtree.com` / `www.darlingtree.com`.
+The Cloudflare Pages project `my-homepage` is a **direct-upload** project
+(no git integration). Deploys happen two ways:
+
+- **Automatic**: `.github/workflows/deploy.yml` builds and deploys on every
+  push to `main` (needs the `CLOUDFLARE_API_TOKEN` repo secret with
+  "Cloudflare Pages: Edit" permission).
+- **Manual fallback**: `npm run publish:cf` with a wrangler login.
+
+The production domain is `darlingtree.com` / `www.darlingtree.com`.

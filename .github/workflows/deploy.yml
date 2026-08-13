@@ -1,0 +1,40 @@
+name: Deploy to Cloudflare Pages
+
+# The Pages project "my-homepage" is a direct-upload project (no git
+# integration), so pushes don't build on Cloudflare's side. This workflow
+# replicates `npm run publish:cf` on every push to main instead.
+#
+# Requires repo secret CLOUDFLARE_API_TOKEN with permission
+# "Cloudflare Pages: Edit" on the account.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+concurrency:
+  group: pages-deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - name: Drop files over Pages' 25 MB limit
+        run: find dist -type f -size +24M -print -delete
+      - name: Deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: 046c617ae6ff124ea360c3a6117188d5
+          command: pages deploy dist --project-name=my-homepage --branch=main
