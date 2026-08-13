@@ -236,6 +236,7 @@ const malwareYears = [
         <a href="#" class="text-lg font-bold text-gray-900 dark:text-white">Si Chen</a>
         <div class="flex items-center gap-1 sm:gap-2 text-sm">
           <a href="#about" class="hidden sm:inline-block px-3 py-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">About</a>
+          <a href="#projects" class="hidden sm:inline-block px-3 py-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">Projects</a>
           <a href="#publications" class="hidden sm:inline-block px-3 py-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">Publications</a>
           <a href="#awards" class="hidden sm:inline-block px-3 py-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">Awards</a>
           <a href="#teaching" class="hidden sm:inline-block px-3 py-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">Teaching</a>
@@ -305,26 +306,11 @@ const malwareYears = [
             <a href="https://www.researchgate.net/profile/Si_Chen11" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
               <i data-lucide="book-open" class="w-4 h-4"></i> ResearchGate
             </a>
-            <a href="https://badgerctf.com/" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-              <i data-lucide="flag" class="w-4 h-4"></i> BadgerCTF
+            <a href="https://github.com/quake0day" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+              <i data-lucide="github" class="w-4 h-4"></i> GitHub
             </a>
-            <a href="https://garden.darlingtree.com" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-              <i data-lucide="leaf" class="w-4 h-4"></i> My Garden
-            </a>
-            <a href="https://kara.galaxymentor.com" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-              <i data-lucide="rocket" class="w-4 h-4"></i> Kara
-            </a>
-            <a href="https://wiki.galaxymentor.com" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-              <i data-lucide="book-marked" class="w-4 h-4"></i> LearningRev
-            </a>
-            <a href="http://picard.cs.wcupa.edu/" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-              <i data-lucide="play-circle" class="w-4 h-4"></i> MoozLab
-            </a>
-            <a href="https://oj.wcpc.fun/" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-              <i data-lucide="trophy" class="w-4 h-4"></i> WCU OJ System
-            </a>
-            <a href="https://museiq.darlingtree.com/" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-              <i data-lucide="brain" class="w-4 h-4"></i> MuseIQ
+            <a href="#projects" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+              <i data-lucide="wrench" class="w-4 h-4"></i> Systems I Built
             </a>
           </div>
         </div>
@@ -359,6 +345,87 @@ const malwareYears = [
             ))}
           </div>
         </div>
+      </section>
+
+      <!-- ===== RECENT NEWS ===== -->
+      <section id="news" class="mb-12">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2 mb-4">
+          <i data-lucide="newspaper" class="w-6 h-6 text-gray-900 dark:text-gray-100 underline underline-offset-2"></i>
+          Recent News
+        </h2>
+        <ul class="space-y-2 text-sm leading-relaxed">
+          <li class="flex items-start gap-3"><span class="flex-shrink-0 w-16 text-xs font-semibold text-gray-500 dark:text-gray-400 mt-0.5">2026</span><span><strong>Promoted to Full Professor</strong> of Computer Science</span></li>
+          <li class="flex items-start gap-3"><span class="flex-shrink-0 w-16 text-xs font-semibold text-gray-500 dark:text-gray-400 mt-0.5">2026</span><span>Awarded a <strong>PASSHE FPDC Grant</strong> ($9,372) for AI-powered analysis of programming submission trajectories</span></li>
+          <li class="flex items-start gap-3"><span class="flex-shrink-0 w-16 text-xs font-semibold text-gray-500 dark:text-gray-400 mt-0.5">2026</span><span>Served as <strong>Security Contest Chair</strong> at <a href="https://pacise26.badgerctf.com/" target="_blank" class="text-gray-900 dark:text-gray-100 underline underline-offset-2 hover:underline">PACISE'26</a>, running the CTF on the self-built BadgerCTF platform</span></li>
+          <li class="flex items-start gap-3"><span class="flex-shrink-0 w-16 text-xs font-semibold text-gray-500 dark:text-gray-400 mt-0.5">2025</span><span><strong>Best Paper Award</strong> at IEEE TALE 2025 (Macao, China) for RAG-based LLM alignment in the classroom</span></li>
+          <li class="flex items-start gap-3"><span class="flex-shrink-0 w-16 text-xs font-semibold text-gray-500 dark:text-gray-400 mt-0.5">2025</span><span>Google Scholar citations passed <strong>1,000</strong></span></li>
+          <li class="flex items-start gap-3"><span class="flex-shrink-0 w-16 text-xs font-semibold text-gray-500 dark:text-gray-400 mt-0.5">2025</span><span>Invited talk on AI-assisted learning at the SAPA-GP 2025 Annual Conference</span></li>
+        </ul>
+      </section>
+
+      <!-- ===== SYSTEMS & PROJECTS ===== -->
+      <section id="projects" class="mb-12">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2 mb-1">
+          <i data-lucide="wrench" class="w-6 h-6 text-gray-900 dark:text-gray-100 underline underline-offset-2"></i>
+          Systems &amp; Projects
+        </h2>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Production systems I designed, built, and operate — serving real students and courses. More on <a href="https://github.com/quake0day" target="_blank" class="underline underline-offset-2 hover:text-gray-700 dark:hover:text-gray-200">GitHub</a>.</p>
+
+        <div class="grid gap-3 sm:grid-cols-2">
+          <div class="border border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:shadow-md transition-shadow">
+            <div class="flex items-center gap-2 mb-1.5">
+              <i data-lucide="flag" class="w-5 h-5"></i>
+              <h4 class="font-semibold"><a href="https://badgerctf.com/" target="_blank" class="hover:underline underline-offset-2">BadgerCTF / BadgerCTF+</a></h4>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400">Self-built CTF and security-lab platform powering hands-on labs in CSC 471/472, adopted by other faculty, and running the PACISE'25/'26 security contests. BadgerCTF+ adds in-browser x86 and ARM (AARCH32) compile/debug over SSH into per-student Docker sandboxes.</p>
+          </div>
+          <div class="border border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:shadow-md transition-shadow">
+            <div class="flex items-center gap-2 mb-1.5">
+              <i data-lucide="trophy" class="w-5 h-5"></i>
+              <h4 class="font-semibold"><a href="https://oj.wcpc.fun/" target="_blank" class="hover:underline underline-offset-2">WCPC Online Judge</a></h4>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400">Competitive-programming judge built and operated for the department — has hosted 10 WCPC programming competitions since 2022, alongside a self-managed <a href="https://quiz.wcpc.fun/" target="_blank" class="underline underline-offset-2">PrairieLearn</a> deployment for course assessments.</p>
+          </div>
+          <div class="border border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:shadow-md transition-shadow">
+            <div class="flex items-center gap-2 mb-1.5">
+              <i data-lucide="sparkles" class="w-5 h-5"></i>
+              <h4 class="font-semibold"><a href="http://galaxymentor.com" target="_blank" class="hover:underline underline-offset-2">GalaxyMentor</a></h4>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400">LLM-based adaptive tutoring platform (supported by a WCU Provost Research Grant), used for AI-assisted tutoring and grading in courses such as CSC 241 Data Structures.</p>
+          </div>
+          <div class="border border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:shadow-md transition-shadow">
+            <div class="flex items-center gap-2 mb-1.5">
+              <i data-lucide="rocket" class="w-5 h-5"></i>
+              <h4 class="font-semibold"><a href="https://kara.galaxymentor.com" target="_blank" class="hover:underline underline-offset-2">Kara</a> &amp; <a href="https://wiki.galaxymentor.com" target="_blank" class="hover:underline underline-offset-2">LearningRev</a></h4>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400">Kara is a privacy-first AI tutor for learning from books — no account, no tracking; LearningRev is its companion knowledge-wiki platform.</p>
+          </div>
+          <div class="border border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:shadow-md transition-shadow">
+            <div class="flex items-center gap-2 mb-1.5">
+              <i data-lucide="play-circle" class="w-5 h-5"></i>
+              <h4 class="font-semibold"><a href="http://picard.cs.wcupa.edu/" target="_blank" class="hover:underline underline-offset-2">MoozLab</a></h4>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400">Segmented asynchronous lecture platform built during COVID to keep courses running remotely, hosted on Google Cloud.</p>
+          </div>
+          <div class="border border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:shadow-md transition-shadow">
+            <div class="flex items-center gap-2 mb-1.5">
+              <i data-lucide="brain" class="w-5 h-5"></i>
+              <h4 class="font-semibold"><a href="https://museiq.darlingtree.com/" target="_blank" class="hover:underline underline-offset-2">MuseIQ</a></h4>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400">Turns individual museum visits into personalized digital wikis, so curious learners can keep building on what they saw.</p>
+          </div>
+        </div>
+
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mt-6 mb-3 flex items-center gap-2">
+          <i data-lucide="cpu" class="w-5 h-5"></i> Systems &amp; Hardware Engineering
+        </h3>
+        <ul class="space-y-2 text-sm leading-relaxed">
+          <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span><strong><a href="https://github.com/quake0day/alibaba-as02mc04-corundum" target="_blank" class="text-gray-900 dark:text-gray-100 underline underline-offset-2 hover:underline">Corundum NIC port</a></strong> — working Corundum mqnic port for the Alibaba AS02MC04 FPGA card (Xilinx XCKU3P), verified 2&times;10G SFP28 port-to-port, with a live GTY DRP transceiver tuning tool</span></li>
+          <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span><strong><a href="https://github.com/quake0day/msa2020-stratix10" target="_blank" class="text-gray-900 dark:text-gray-100 underline underline-offset-2 hover:underline">Microsoft Catapult FPGA experiments</a></strong> — bring-up of the MSA-2020 (Intel Stratix 10 1SG280): DDR4 EMIF, PCIe DMA, 100G transceivers, and a Corundum mqnic NIC</span></li>
+          <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span><strong><a href="https://github.com/quake0day/wolfcode-zed" target="_blank" class="text-gray-900 dark:text-gray-100 underline underline-offset-2 hover:underline">WolfCode</a></strong> — AI-native programming-education IDE built as a fork of Zed (Rust), with a Cloudflare-Container Python sandbox backend</span></li>
+          <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span><strong><a href="https://github.com/quake0day/term-hub" target="_blank" class="text-gray-900 dark:text-gray-100 underline underline-offset-2 hover:underline">term-hub</a></strong> — one web page to see and control every terminal you own: tmux-aware, multi-client, cross-host</span></li>
+          <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span><strong><a href="https://garden.darlingtree.com" target="_blank" class="text-gray-900 dark:text-gray-100 underline underline-offset-2 hover:underline">Smart Garden</a></strong> — real-time IoT monitoring with SensorPush sensors, camera streaming, and AI-powered bird detection</span></li>
+        </ul>
       </section>
 
       <!-- ===== PUBLICATIONS with client-side filtering ===== -->
