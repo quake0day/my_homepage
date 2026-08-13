@@ -1,5 +1,25 @@
 [
   {
+    "id": 67,
+    "type": 1,
+    "title": "Dual-Model RAG for Grounded Student Support",
+    "author": "Linh B. Ngo, Logan Fani, Nam Vu, Nam Hoang, Samuel Luong, Si Chen, Md Amiruzzaman, Stefanie Amiruzzaman",
+    "confname": "The Journal of Computing Sciences in Colleges — 42nd Annual CCSC Eastern Conference (CCSC Eastern 2026)",
+    "urlpaper": null,
+    "urlslides": "",
+    "urlcite": "http://scholar.google.com/scholar?q=Dual-Model+RAG+for+Grounded+Student+Support",
+    "cite": 0,
+    "place": "Bowie State University, Bowie, MD, October 9-10, 2026",
+    "year": 2026,
+    "text": "",
+    "video": "",
+    "cluster": "",
+    "urlpdf": null,
+    "urlaward": null,
+    "hidden": 0,
+    "featured": 1
+  },
+  {
     "id": 33,
     "type": 1,
     "title": "Aligning LLMs for the Classroom with Knowledge-Based Retrieval: A Comparative RAG Study",

@@ -19,6 +19,7 @@ type Entry = {
   urlpdf: string | null;
   urlaward: string | null;
   hidden: number;
+  featured?: number;
 };
 
 const entries = publications as Entry[];
@@ -417,6 +418,7 @@ const malwareYears = [
                   data-type={entry.type}
                   data-year={entry.year}
                   data-hidden={entry.hidden ? "1" : "0"}
+                  data-featured={entry.featured ? "1" : "0"}
                   data-cite={entry.cite || 0}
                   data-search={searchIndex}
                 >
@@ -586,10 +588,10 @@ const malwareYears = [
           <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span><strong>Security Contest Chair</strong> for <a href="https://www.engr.ship.edu/about/pacise2/pacise-2026/" target="_blank" class="text-gray-900 dark:text-gray-100 underline underline-offset-2 hover:underline">PACISE'26</a> (April 10, 2026) — <em>The 41st annual Spring Conference hosted by Shippensburg University; 7 teams competed across 10 Web / Crypto / Binary Exploitation challenges</em> <a href="https://pacise26.badgerctf.com/" target="_blank" class="text-gray-900 dark:text-gray-100 underline underline-offset-2 hover:underline">[contest]</a></span></li>
           <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span><strong>Security Contest Chair</strong> for <a href="https://www.wcupa.edu/sciences-mathematics/computerScience/PACISE2025.aspx" target="_blank" class="text-gray-900 dark:text-gray-100 underline underline-offset-2 hover:underline">PACISE'25</a> (April 4-5, 2025) — <em>The 40th annual Spring Conference hosted by WCU CS Department, with the theme "Cybersecurity in Education"</em> <a href="https://pacise25.badgerctf.com/" target="_blank" class="text-gray-900 dark:text-gray-100 underline underline-offset-2 hover:underline">[contest]</a></span></li>
           <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span><strong>Session Chair</strong> at IEEE MILCOM: "Large Language Models" (Track 5.10) at <a href="https://milcom2025.ieee-milcom.org/" target="_blank" class="text-gray-900 dark:text-gray-100 underline underline-offset-2 hover:underline">MILCOM 2025</a>; "Wireless Network Security" and "Signal Intelligence" at MILCOM 2023, 2024</span></li>
-          <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span><strong>Technical Program Committee (TPC)</strong> for IEEE MILCOM (2016–2026)</span></li>
+          <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span><strong>Technical Program Committee (TPC)</strong> for IEEE MILCOM (2016–2027)</span></li>
           <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span><strong>Program Committee</strong> for CIS 2021, FCS 2020, AFEC 2020, MobiQuitous 2019, IEEE CPSCom 2019, ACM/IEEE IoTDI 2019</span></li>
           <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span><strong>IEEE Senior Member</strong>, 2020–present</span></li>
-          <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span><strong>Regular Reviewer</strong> for IEEE TMC, TDSC, TPDS, TSC, IoT Journal, Network Magazine; INFOCOM, ACM CCS, ICDCS, MobiCom, MobiHoc, AsiaCCS, ESORICS; Computer Networks, MDPI Sensors</span></li>
+          <li class="flex items-start gap-2"><span class="text-gray-400 mt-1">&#8226;</span><span><strong>Regular Reviewer</strong> for IEEE TMC, TDSC, TPDS, TSC, IoT Journal, Network Magazine; INFOCOM, ACM CCS, ICDCS, MobiCom, MobiHoc, AsiaCCS, ESORICS; Computer Networks, MDPI Sensors, Electronic Research Archive, Journal on Information Security</span></li>
         </ul>
 
         <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3 flex items-center gap-2">
@@ -754,10 +756,11 @@ const malwareYears = [
             var entryType = el.getAttribute("data-type") || "";
             var entryYear = el.getAttribute("data-year") || "";
             var entryHidden = el.getAttribute("data-hidden") === "1";
+            var entryFeatured = el.getAttribute("data-featured") === "1";
             var entryCite = parseInt(el.getAttribute("data-cite") || "0", 10);
             var entrySearch = el.getAttribute("data-search") || "";
             var show = true;
-            if (!showAll && (entryHidden || entryCite === 0)) show = false;
+            if (!showAll && !entryFeatured && (entryHidden || entryCite === 0)) show = false;
             if (show && t && entryType !== t) show = false;
             if (show && y && entryYear !== y) show = false;
             if (show && q && entrySearch.indexOf(q) === -1) show = false;
