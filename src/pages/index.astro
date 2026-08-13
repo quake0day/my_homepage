@@ -216,7 +216,8 @@ const malwareYears = [
         transition: box-shadow 0.2s, border-color 0.2s;
       }
       .media-card:hover { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); border-color: #d1d5db; }
-      .dark .media-card { background: #1f2937; border-color: #374151; }
+      /* Keep a light background in dark mode so dark-ink press logos stay legible */
+      .dark .media-card { background: #f9fafb; border-color: #374151; }
       .dark .media-card:hover { border-color: #4b5563; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); }
       .media-card img { max-height: 32px; width: auto; object-fit: contain; }
       [id] { scroll-margin-top: 80px; }
@@ -384,7 +385,7 @@ const malwareYears = [
               <i data-lucide="trophy" class="w-5 h-5"></i>
               <h4 class="font-semibold"><a href="https://oj.wcpc.fun/" target="_blank" class="hover:underline underline-offset-2">WCPC Online Judge</a></h4>
             </div>
-            <p class="text-sm text-gray-600 dark:text-gray-400">Competitive-programming judge built and operated for the department — has hosted 10 WCPC programming competitions since 2022, alongside a self-managed <a href="https://quiz.wcpc.fun/" target="_blank" class="underline underline-offset-2">PrairieLearn</a> deployment for course assessments.</p>
+            <p class="text-sm text-gray-600 dark:text-gray-400">Competitive-programming judge built and operated for the department — has hosted 10 WCPC programming competitions since 2022, alongside a self-managed PrairieLearn deployment for course assessments.</p>
           </div>
           <div class="border border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:shadow-md transition-shadow">
             <div class="flex items-center gap-2 mb-1.5">
