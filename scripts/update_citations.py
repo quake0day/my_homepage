@@ -30,6 +30,7 @@ SCHOLAR_PROFILE = os.environ.get("SCHOLAR_PROFILE", "DDLTYpAAAAAJ")
 # all matching Scholar rows are summed onto the JSON id.
 SCHOLAR_TITLE_ALIASES = {
     "authentication": 61,  # Encyclopedia of Wireless Networks chapter
+    "ssr priwhisper": 59,  # SVG-rendered LaTeX title on Scholar
 }
 
 logging.basicConfig(
@@ -145,6 +146,17 @@ def extract_scholar_rows(html):
                 cite_str = part[tag_end + 1 : close_tag].strip()
                 if cite_str.isdigit():
                     citations = int(cite_str)
+        if "<svg" in title:
+            # Scholar renders some LaTeX titles as inline SVG; recover the
+            # text from aria-label and strip the LaTeX braces/backslashes.
+            import re
+            m = re.search(r'aria-label="([^"]*)"', title)
+            if m:
+                title = re.sub(
+                    r"\s+", " ", re.sub(r"[{}\\]", " ", m.group(1))
+                ).strip()
+            else:
+                title = ""
         if title:
             rows.append("{} ||| {}".format(title, citations))
     return rows
